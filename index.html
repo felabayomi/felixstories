@@ -116,6 +116,11 @@
       color: var(--ink);
     }
 
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: .42;
+    }
+
     main section {
       padding: 64px 0;
       border-top: 1px solid var(--line);
@@ -325,7 +330,7 @@
         <aside class="control-panel">
           <div class="kicker">Daily continuation</div>
           <h2>Today's Page</h2>
-          <p>Each date opens a new installment. Change the names to make the story closer to your own memory; the page will keep them on this device.</p>
+          <p>Each date opens a cinematic installment inspired by the love, imagination, and longing behind the stories you once shared. Change the names to make the draft feel closer to your heart; the page will keep them on this device.</p>
 
           <div class="field">
             <label for="listenerName">Younger sibling</label>
@@ -345,6 +350,7 @@
           </div>
           <div class="toolbar">
             <button class="btn primary" id="saveNames">Save</button>
+            <button class="btn" id="previousEpisode">Previous</button>
             <button class="btn" id="futureEpisode">Peek Ahead</button>
             <button class="btn" id="downloadEpisode">Download</button>
           </div>
@@ -516,31 +522,103 @@
 
   <script>
     const startDate = new Date("2026-07-04T00:00:00");
-    const beats = [
-      ["The Lantern Keeper", "a woman in a red headwrap lifts a brass lantern and tells {you} that every story has a pulse", "a leaf on the path folds itself into the shape of {brother}'s handwriting"],
-      ["Listening Trees", "the trees repeat childhood sentences {you} thought were lost forever", "one tree speaks in a voice that almost sounds like home"],
-      ["Borrowed Voices", "a market opens where traders sell echoes, apologies, and unfinished songs", "a thief runs away carrying {brother}'s laugh in a glass bottle"],
-      ["The Repeating River", "{you} steps into a river and relives one ordinary afternoon with {brother}", "the river asks which memory {you} is willing to protect with pain"],
-      ["Ama at the Door", "Ama follows the muddy footprints into the bedroom and refuses to turn back", "the door closes behind her before {you} can warn her"],
-      ["The Bottle of Laughter", "{you} and Ama chase the thief through a city of tilted roofs", "inside the bottle, {brother}'s laugh becomes a warning"],
-      ["The First Hunger", "the Unremembering appears as a blank place where the eye cannot rest", "it offers {you} peace in exchange for silence"],
-      ["Under the Great Tree", "the roots open and reveal a city lit by thousands of remembered names", "one of the name-lamps begins to flicker"],
-      ["The Root King's Question", "the Root King asks whether {you} wants {brother} back or wants the pain to stop", "{you} cannot answer before the floor turns to water"],
-      ["The Anger Fragment", "{you} finds the night {brother} defended a stranger and paid for it", "the memory burns too hot to hold barehanded"],
-      ["Bridge of Names", "the bridge appears only when each traveler speaks a true name with love", "Ama says a name {you} has never heard before"],
-      ["The Walking House", "a small house on chicken-thin legs carries them away from a storm of blank pages", "something knocks from inside the locked room"],
-      ["Song Without Singer", "a song rises from an empty chair at the center of a feast", "{you} realizes everyone else can hear {brother} except him"],
-      ["Second Door", "a second door opens inside the first, leading not to Aroko but to the hospital room", "{brother} is there, younger and smiling, but he does not know {you}"],
-      ["The Empty Chair", "the court of Aroko puts {you}'s grief on trial", "the witness against him is his own silence"],
-      ["Remembered Feast", "every dish on the table is a memory someone almost lost", "the sweetest one makes {you} cry in front of strangers"],
-      ["Ink That Bleeds", "the notebook's map bleeds across {you}'s hands and redraws his future", "a new road appears where no road should be"],
-      ["Ama's Promise", "Ama admits she has been grieving in secret too", "the Unremembering learns how to speak with her voice"],
-      ["The Third Fragment", "{you} must enter a room made of all the things he never said", "at the center waits {brother}'s last blessing"],
-      ["The Story Breaks", "sentences fall from the sky like birds with torn wings", "{you} understands that finishing the story may change him forever"],
-      ["The Last Joke", "in the darkest tunnel, {brother}'s final joke saves them from despair", "even the Root King laughs, and the roots begin to move"],
-      ["The Name It Could Not Eat", "{you} speaks {brother}'s name with every truth attached to it", "the darkness shrinks, but only into something smaller and cleverer"],
-      ["Rain Return", "{you} wakes in his room with mud on his feet and a warm page in the notebook", "outside, someone whispers, continue"],
-      ["The Blank Page", "a blank page appears each dawn and waits for {you}'s hand", "the first sentence writes itself, then stops"]
+    const scenes = [
+      {
+        title: "The Lantern Keeper",
+        image: "A line of gold moves between the trees, thin at first, then bright enough to paint every wet leaf with fire.",
+        conflict: "A woman carrying a brass lantern steps from the mist and studies {you} as if she has been expecting him for years. She does not ask why his hands are shaking. She only points to the black notebook pressed against his chest and says, \"That book did not choose you because you are ready. It chose you because you came.\"",
+        memory: "{you} thinks of all the nights {brother} stopped a story at the exact moment when the room felt too small to contain it. Back then, the pause had felt like punishment. Now he understands it was training.",
+        turn: "The Lantern Keeper kneels and places the flame close to the ground. A path appears, built from sentences {you} remembers hearing as a child, each one glowing for a breath before sinking into the soil.",
+        hook: "At the end of the path, a leaf folds itself into the shape of {brother}'s handwriting and writes one word: listen."
+      },
+      {
+        title: "The Listening Trees",
+        image: "Morning comes to the forest without a sun. The light rises from the bark, from old roots, from droplets trembling on leaves like tiny glass bells.",
+        conflict: "{you} walks until the trees begin speaking in broken pieces of old evenings. One trunk murmurs, \"Continue.\" Another answers, \"Tomorrow makes the story stronger.\" The words are not a recording. They breathe. They wait for him to answer.",
+        memory: "For a moment, {you} is back in the room where he used to beg {brother} for one more scene. He remembers the angle of his brother's smile, the way joy could sit beside tiredness and still shine through.",
+        turn: "Then one tree speaks a sentence {you} has never heard before: \"A story is not the person you lost. It is the road love builds after loss.\" The bark splits open, revealing a narrow stairway descending into blue dark.",
+        hook: "From below comes a soft knock, three times, exactly the rhythm {brother} used when he wanted to be let in."
+      },
+      {
+        title: "The Market of Borrowed Voices",
+        image: "The forest thins into a market under red cloth canopies, where every stall hums with voices trapped inside jars, shells, cups, and folded paper.",
+        conflict: "A trader with silver rings on every finger offers {you} a perfect imitation of {brother}'s laugh. The price is simple: one true memory surrendered forever. {you} reaches for the jar before he understands how badly he wants it.",
+        memory: "The laugh inside the glass is almost right. It has warmth, mischief, and that rising note that used to make others laugh before the joke was even finished. Almost right is the cruelest kind of wrong.",
+        turn: "Before {you} can trade, the jar cracks. The laugh escapes, circles the market, and lands in the notebook as ink. Across the page, a new instruction appears: never buy what love has already given you.",
+        hook: "A hooded figure snatches the page and runs, leaving behind a trail of falling commas."
+      },
+      {
+        title: "The River That Repeats",
+        image: "A river bends through the world in a perfect circle, carrying the same silver water past the same stone again and again.",
+        conflict: "{you} steps into it and the forest vanishes. He is standing in an ordinary afternoon with {brother}, the kind of day no one knows to treasure while it is happening. There is dust in the light. There is laughter in the next room. There is still time.",
+        memory: "The pain of it nearly drives {you} to his knees. Not because the memory is dramatic, but because it is not. Love often hides inside ordinary hours and waits until later to reveal its size.",
+        turn: "The river asks, \"Would you stay here if staying meant the story ended?\" {you} looks at the younger version of himself, then at {brother}, and understands that memory is a place to visit, not a house to live in.",
+        hook: "When he opens his wet hand, he is holding a stone warm as a heartbeat."
+      },
+      {
+        title: "Ama at the Door",
+        image: "Back in the real room, mud dries on the floorboards in the shape of footprints that do not belong to anyone in the house.",
+        conflict: "Ama sees them before {you} can hide them. She does not scream. She does not pray. She picks up a flashlight and says, \"If grief has a door, nobody should walk through it alone.\"",
+        memory: "{you} wants to refuse her, but he remembers how {brother} hated lonely bravery. He had once said courage becomes foolish when it refuses every helping hand.",
+        turn: "The bedroom door opens again, and this time the forest is louder. Ama takes one step through and laughs despite herself, because terror and wonder have arrived wearing the same face.",
+        hook: "The door shuts behind them, and from the other side, someone locks it."
+      },
+      {
+        title: "The First Hunger",
+        image: "Past the second ridge, the forest stops making sound. No insects, no wind, no creak of branches. Even footsteps seem embarrassed to exist.",
+        conflict: "The Unremembering appears as a blankness between two trees, a place where the eye slides away. It speaks without a mouth: \"I can make it stop hurting.\" The offer is not loud. That makes it more dangerous.",
+        memory: "{you} feels the temptation like cool water. To stop hurting. To stop reaching for a voice that cannot answer in the old way. To let the name become easier to say by saying it less.",
+        turn: "Ama grips his sleeve. The notebook grows hot. {you} says {brother}'s name once, then again, and each time the blankness flinches. Pain does not disappear, but it stands beside him instead of over him.",
+        hook: "The Unremembering retreats, leaving a hole in the air shaped like a keyhole."
+      },
+      {
+        title: "The City Beneath the Tree",
+        image: "The great tree rises wider than a town, its roots arching open like gates carved by time itself.",
+        conflict: "Below it lies Aroko, a city lit by thousands of name-lamps. Each lamp burns for someone remembered by the living. As {you} enters, one lamp near the center flickers low, and the Lantern Keeper whispers, \"That one is tied to the unfinished story.\"",
+        memory: "{you} knows whose lamp it is before anyone says so. He feels it in the sudden tightness of his throat, in the way the city seems to lean toward him, waiting.",
+        turn: "The Root King sits on a throne grown from dark wood and asks the question {you} fears most: \"Do you want your brother back, or do you want to become brave enough to carry him forward?\"",
+        hook: "Before {you} can answer, every lamp in the city goes out."
+      },
+      {
+        title: "The Trial of the Empty Chair",
+        image: "A hall forms from roots and moonlight, and at its center waits a single empty chair.",
+        conflict: "The court of Aroko calls {you} to stand before it. The charge is silence. Every time he avoided saying {brother}'s name because it hurt, every time he smiled so others would not worry, every swallowed sentence gathers in the room like smoke.",
+        memory: "{you} wants to defend himself, but grief is complicated. Sometimes silence was survival. Sometimes it was fear. Sometimes it was both, twisted together.",
+        turn: "The empty chair does not accuse him. It simply waits. At last {you} speaks one true thing: \"I was afraid that if I talked about him, I would fall apart.\" The smoke thins. The chair turns toward him as if listening.",
+        hook: "A voice from the chair says, \"Then fall apart honestly, and build from there.\""
+      },
+      {
+        title: "The Feast of Remembered Things",
+        image: "Long tables fill a square beneath the roots, covered with dishes that steam with memories instead of heat.",
+        conflict: "To pass through the square, every traveler must taste one memory they have avoided. Ama chooses first and begins to cry before the spoon reaches her mouth. {you} realizes he has not been the only one carrying rooms inside him.",
+        memory: "When his turn comes, the dish tastes like late-night stories, tired laughter, medicine bitterness, and rain on the roof. It is too much. It is not enough. It is his.",
+        turn: "Across the table, the Lantern Keeper says, \"Love does not become smaller because it hurts. Sometimes pain is the shadow cast by something enormous.\"",
+        hook: "Under {you}'s bowl, a map appears, and the ink is moving."
+      },
+      {
+        title: "The Room of Unsaid Things",
+        image: "The moving map leads to a door with no handle, only a mirror dark enough to show the parts of a face people hide.",
+        conflict: "{you} enters alone. Inside are all the sentences he never said: thank you, forgive me, I miss you, I was angry, I was scared, I still listen for you. They hang from the ceiling like lanterns that never learned to burn.",
+        memory: "At the center of the room waits the memory of {brother}, not whole, not returned, but present in the way a song can be present after the singer has gone quiet.",
+        turn: "The memory smiles with unbearable kindness. \"You do not have to make my death meaningful,\" it says. \"Make your life honest. That is enough.\" One lantern catches fire.",
+        hook: "Then another. Then all of them. And the room begins to open beneath his feet."
+      },
+      {
+        title: "The Story Breaks",
+        image: "Sentences fall from the sky in torn strips, fluttering across Aroko like ash-colored rain.",
+        conflict: "The Unremembering has entered the notebook. Pages twist. Maps lie. Names smear into unreadable ink. The city panics, but {you} hears {brother}'s old storytelling voice beneath the chaos: when the plot breaks, follow the heart.",
+        memory: "He remembers being young, impatient, wide-eyed, believing every pause was a promise. Maybe it was. Maybe every unfinished story had been teaching him how to stand inside uncertainty.",
+        turn: "{you} stops chasing the scattered pages. He opens the notebook to a blank sheet and writes the first sentence himself. The forest holds its breath. Even the darkness waits to see what he will choose.",
+        hook: "The sentence glows, and somewhere far away, {brother} laughs like dawn entering a locked room."
+      },
+      {
+        title: "The Name It Could Not Eat",
+        image: "At the edge of Aroko, the darkness gathers into a wall tall enough to hide the stars.",
+        conflict: "The Unremembering demands one final bargain: stop telling the story, and it will stop opening old wounds. {you} feels the exhaustion in his bones. He is tired of being brave. He is tired of missing someone with his whole body.",
+        memory: "Then he understands that missing {brother} is not a failure to heal. It is proof that love built something strong enough to remain.",
+        turn: "{you} speaks {brother}'s name with every truth attached: the laughter, the courage, the flaws, the tenderness, the hard days, the unfinished sentence. The name becomes too full for the darkness to swallow.",
+        hook: "The wall cracks, and behind it waits a new morning with a blank page at its center."
+      }
     ];
 
     const toneLines = {
@@ -556,6 +634,7 @@
     const listenerInput = document.getElementById("listenerName");
     const brotherInput = document.getElementById("brotherName");
     const toneInput = document.getElementById("tone");
+    const previousButton = document.getElementById("previousEpisode");
     let offset = 0;
 
     function cleanName(value, fallback) {
@@ -572,32 +651,46 @@
       return text.replaceAll("{you}", names.you).replaceAll("{brother}", names.brother);
     }
 
+    function textureLine(day, tone) {
+      const lines = {
+        tender: [
+          "The scene moves slowly, the way a camera lingers when it knows the smallest gesture matters.",
+          "Nothing is rushed; even the silence is allowed to have a face.",
+          "The world feels wounded, but there is warmth under the wound."
+        ],
+        dark: [
+          "The light is thin, and every shadow seems to be listening for weakness.",
+          "The scene tightens like a held breath, beautiful and dangerous at the same time.",
+          "Hope is present, but it has to keep its back against the wall."
+        ],
+        mythic: [
+          "The moment feels older than memory, as if generations are watching from the edges of the page.",
+          "Every step sounds ceremonial, like the world is naming him as he walks.",
+          "The air carries the weight of legend, but the ache inside it is human."
+        ]
+      };
+      return lines[tone][day % lines[tone].length];
+    }
+
     function buildEpisode(day, names, tone) {
-      const beat = beats[day % beats.length];
+      const scene = scenes[day % scenes.length];
       const part = day + 1;
-      const cycle = Math.floor(day / beats.length) + 1;
-      const title = "Part " + part + ": " + beat[0];
-      const first = sentence(beat[1], names);
-      const turn = sentence(beat[2], names);
-      const memory = [
-        names.brother + " used to pause at the best part, not because he wanted to be cruel, but because he understood hunger.",
-        names.you + " remembers the old rule: tomorrow makes the story stronger.",
-        "Somewhere behind the leaves, the unfinished tale takes one more breath."
-      ][day % 3];
-      const cliff = [
-        "Then the lantern goes out, and a hand {you} cannot see places a new key in his palm.",
-        "The notebook snaps shut by itself, trapping one word inside: continue.",
-        "From the other side of the path, {brother}'s voice says, not yet."
-      ][day % 3].replace("{you}", names.you).replace("{brother}", names.brother);
+      const cycle = Math.floor(day / scenes.length) + 1;
+      const title = "Chapter " + part + ": " + scene.title;
+      const closing = cycle > 1
+        ? "The story has circled this place before, but grief is never the same river twice. This time, " + names.you + " notices a detail the old version of himself missed."
+        : "And because every true story knows when to close its hand, the page ends there for today.";
 
       return {
         title,
         meta: "Day " + (day + 1) + " of the living serial" + (cycle > 1 ? " | Cycle " + cycle : ""),
         paragraphs: [
-          first + ". " + toneLines[tone],
-          memory + " So " + names.you + " walks forward, one hand on the notebook and one hand open to the dark.",
-          turn + ". For a moment the whole forest listens, as if waiting to discover whether grief will become a cage or a doorway.",
-          cliff
+          sentence(scene.image, names) + " " + textureLine(day, tone),
+          sentence(scene.conflict, names),
+          sentence(scene.memory, names),
+          sentence(scene.turn, names),
+          sentence(scene.hook, names),
+          closing
         ]
       };
     }
@@ -620,7 +713,10 @@
       metaEl.textContent = episode.meta + " | " + today.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
       textEl.innerHTML = episode.paragraphs.map((p) => "<p>" + p + "</p>").join("");
       const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-      nextNote.textContent = offset ? "Peek mode is showing a future page. Save names anytime, then return tomorrow for the real next installment." : "Next automatic installment: " + tomorrow.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) + ".";
+      previousButton.disabled = offset === 0;
+      nextNote.textContent = offset
+        ? "Peek mode is " + offset + " day" + (offset === 1 ? "" : "s") + " ahead. Use Previous to step back toward today's real installment."
+        : "Next automatic installment: " + tomorrow.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) + ".";
     }
 
     document.getElementById("saveNames").addEventListener("click", () => {
@@ -635,6 +731,11 @@
 
     document.getElementById("futureEpisode").addEventListener("click", () => {
       offset += 1;
+      render();
+    });
+
+    previousButton.addEventListener("click", () => {
+      offset = Math.max(0, offset - 1);
       render();
     });
 
