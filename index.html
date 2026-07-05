@@ -1,757 +1,849 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Story Remembers You</title>
-  <style>
-    :root {
-      --ink: #171717;
-      --paper: #fbf7ef;
-      --paper-deep: #efe2d0;
-      --forest: #17362d;
-      --moss: #527a4c;
-      --gold: #d8a547;
-      --ember: #b64f35;
-      --river: #2f6f8e;
-      --violet: #514467;
-      --line: rgba(23, 23, 23, .16);
-      --shadow: 0 24px 70px rgba(23, 23, 23, .22);
-      --radius: 8px;
-    }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Story Remembers You</title>
+    <style>
+        :root {
+            --ink: #171717;
+            --paper: #fbf7ef;
+            --paper-deep: #efe2d0;
+            --forest: #17362d;
+            --moss: #527a4c;
+            --gold: #d8a547;
+            --ember: #b64f35;
+            --river: #2f6f8e;
+            --violet: #514467;
+            --line: rgba(23, 23, 23, .16);
+            --shadow: 0 24px 70px rgba(23, 23, 23, .22);
+            --radius: 8px;
+        }
 
-    * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.55;
-    }
+        body {
+            margin: 0;
+            color: var(--ink);
+            background: var(--paper);
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1.55;
+        }
 
-    button, input, select {
-      font: inherit;
-    }
+        button,
+        input,
+        select {
+            font: inherit;
+        }
 
-    .hero {
-      min-height: 92vh;
-      position: relative;
-      display: grid;
-      align-items: end;
-      background:
-        linear-gradient(90deg, rgba(13, 17, 17, .86), rgba(13, 17, 17, .54) 46%, rgba(13, 17, 17, .1)),
-        linear-gradient(0deg, rgba(13, 17, 17, .75), rgba(13, 17, 17, 0) 36%),
-        url("story-threshold.png") center / cover no-repeat;
-      color: #fff7e9;
-      overflow: hidden;
-    }
+        .hero {
+            min-height: 92vh;
+            position: relative;
+            display: grid;
+            align-items: end;
+            background:
+                linear-gradient(90deg, rgba(13, 17, 17, .86), rgba(13, 17, 17, .54) 46%, rgba(13, 17, 17, .1)),
+                linear-gradient(0deg, rgba(13, 17, 17, .75), rgba(13, 17, 17, 0) 36%),
+                url("story-threshold.png") center / cover no-repeat;
+            color: #fff7e9;
+            overflow: hidden;
+        }
 
-    .hero-inner {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 72px 0 9vh;
-    }
+        .hero-inner {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 72px 0 9vh;
+        }
 
-    .kicker {
-      color: #f3c66b;
-      font-size: .86rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
+        .kicker {
+            color: #f3c66b;
+            font-size: .86rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
 
-    h1, h2, h3 {
-      line-height: 1.05;
-      margin: 0;
-      letter-spacing: 0;
-    }
+        h1,
+        h2,
+        h3 {
+            line-height: 1.05;
+            margin: 0;
+            letter-spacing: 0;
+        }
 
-    h1 {
-      max-width: 820px;
-      font-size: clamp(3.1rem, 9vw, 7.4rem);
-      text-wrap: balance;
-    }
+        h1 {
+            max-width: 820px;
+            font-size: clamp(3.1rem, 9vw, 7.4rem);
+            text-wrap: balance;
+        }
 
-    .hero p {
-      max-width: 690px;
-      margin: 22px 0 0;
-      color: #fff0d2;
-      font-size: clamp(1.05rem, 2.1vw, 1.35rem);
-    }
+        .hero p {
+            max-width: 690px;
+            margin: 22px 0 0;
+            color: #fff0d2;
+            font-size: clamp(1.05rem, 2.1vw, 1.35rem);
+        }
 
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 28px;
-    }
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
 
-    .btn {
-      border: 1px solid rgba(255, 247, 233, .45);
-      border-radius: var(--radius);
-      background: rgba(255, 247, 233, .12);
-      color: #fff7e9;
-      padding: 10px 14px;
-      min-height: 44px;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-    }
+        .btn {
+            border: 1px solid rgba(255, 247, 233, .45);
+            border-radius: var(--radius);
+            background: rgba(255, 247, 233, .12);
+            color: #fff7e9;
+            padding: 10px 14px;
+            min-height: 44px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
 
-    .btn.primary {
-      background: #f2bd59;
-      border-color: #f2bd59;
-      color: #1d160d;
-    }
+        .btn.primary {
+            background: #f2bd59;
+            border-color: #f2bd59;
+            color: #1d160d;
+        }
 
-    .btn.dark {
-      background: var(--forest);
-      border-color: var(--forest);
-      color: #fff7e9;
-    }
+        .btn.dark {
+            background: var(--forest);
+            border-color: var(--forest);
+            color: #fff7e9;
+        }
 
-    .btn.light {
-      background: transparent;
-      border-color: var(--line);
-      color: var(--ink);
-    }
+        .btn.light {
+            background: transparent;
+            border-color: var(--line);
+            color: var(--ink);
+        }
 
-    .btn:disabled {
-      cursor: not-allowed;
-      opacity: .42;
-    }
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: .42;
+        }
 
-    main section {
-      padding: 64px 0;
-      border-top: 1px solid var(--line);
-    }
+        main section {
+            padding: 64px 0;
+            border-top: 1px solid var(--line);
+        }
 
-    .wrap {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-    }
+        .wrap {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+        }
 
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
-      gap: 36px;
-      margin-bottom: 30px;
-    }
+        .section-head {
+            display: grid;
+            grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+            gap: 36px;
+            margin-bottom: 30px;
+        }
 
-    .section-head h2 {
-      font-size: clamp(2rem, 5vw, 4.1rem);
-    }
+        .section-head h2 {
+            font-size: clamp(2rem, 5vw, 4.1rem);
+        }
 
-    .section-head p {
-      margin: 0;
-      font-size: 1.08rem;
-      color: #4b4037;
-    }
+        .section-head p {
+            margin: 0;
+            font-size: 1.08rem;
+            color: #4b4037;
+        }
 
-    .daily-band {
-      background: #102821;
-      color: #fff7e9;
-    }
+        .daily-band {
+            background: #102821;
+            color: #fff7e9;
+        }
 
-    .daily-grid {
-      display: grid;
-      grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
-      gap: 28px;
-      align-items: start;
-    }
+        .daily-grid {
+            display: grid;
+            grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+            gap: 28px;
+            align-items: start;
+        }
 
-    .control-panel {
-      border: 1px solid rgba(255, 247, 233, .16);
-      border-radius: var(--radius);
-      background: rgba(255, 247, 233, .06);
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
+        .control-panel {
+            border: 1px solid rgba(255, 247, 233, .16);
+            border-radius: var(--radius);
+            background: rgba(255, 247, 233, .06);
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
 
-    .field {
-      display: grid;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
+        .field {
+            display: grid;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
 
-    label {
-      font-family: Arial, sans-serif;
-      font-size: .78rem;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      color: rgba(255, 247, 233, .74);
-    }
+        label {
+            font-family: Arial, sans-serif;
+            font-size: .78rem;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: rgba(255, 247, 233, .74);
+        }
 
-    input, select {
-      width: 100%;
-      min-height: 42px;
-      border: 1px solid rgba(255, 247, 233, .22);
-      border-radius: var(--radius);
-      background: rgba(255, 247, 233, .1);
-      color: #fff7e9;
-      padding: 8px 10px;
-    }
+        input,
+        select {
+            width: 100%;
+            min-height: 42px;
+            border: 1px solid rgba(255, 247, 233, .22);
+            border-radius: var(--radius);
+            background: rgba(255, 247, 233, .1);
+            color: #fff7e9;
+            padding: 8px 10px;
+        }
 
-    select option {
-      color: var(--ink);
-    }
+        select option {
+            color: var(--ink);
+        }
 
-    .episode {
-      border-radius: var(--radius);
-      background: #fffaf0;
-      color: var(--ink);
-      padding: clamp(20px, 4vw, 34px);
-      box-shadow: var(--shadow);
-    }
+        .episode {
+            border-radius: var(--radius);
+            background: #fffaf0;
+            color: var(--ink);
+            padding: clamp(20px, 4vw, 34px);
+            box-shadow: var(--shadow);
+        }
 
-    .episode h3 {
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      color: var(--forest);
-      margin-bottom: 12px;
-    }
+        .episode h3 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            color: var(--forest);
+            margin-bottom: 12px;
+        }
 
-    .meta {
-      font-family: Arial, sans-serif;
-      font-size: .82rem;
-      color: #6c5c4f;
-      margin-bottom: 18px;
-    }
+        .meta {
+            font-family: Arial, sans-serif;
+            font-size: .82rem;
+            color: #6c5c4f;
+            margin-bottom: 18px;
+        }
 
-    .episode-text p, .chapter p {
-      margin: 0 0 1em;
-    }
+        .episode-text p,
+        .chapter p {
+            margin: 0 0 1em;
+        }
 
-    .columns {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
+        .columns {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
 
-    .tile {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .42);
-      padding: 18px;
-      min-height: 180px;
-    }
+        .tile {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, .42);
+            padding: 18px;
+            min-height: 180px;
+        }
 
-    .tile h3 {
-      color: var(--forest);
-      font-size: 1.35rem;
-      margin-bottom: 8px;
-    }
+        .tile h3 {
+            color: var(--forest);
+            font-size: 1.35rem;
+            margin-bottom: 8px;
+        }
 
-    .plot {
-      display: grid;
-      gap: 16px;
-    }
+        .plot {
+            display: grid;
+            gap: 16px;
+        }
 
-    .plot-row {
-      display: grid;
-      grid-template-columns: 160px minmax(0, 1fr);
-      gap: 18px;
-      border-top: 1px solid var(--line);
-      padding-top: 16px;
-    }
+        .plot-row {
+            display: grid;
+            grid-template-columns: 160px minmax(0, 1fr);
+            gap: 18px;
+            border-top: 1px solid var(--line);
+            padding-top: 16px;
+        }
 
-    .plot-row strong {
-      color: var(--ember);
-      font-family: Arial, sans-serif;
-      font-size: .9rem;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
+        .plot-row strong {
+            color: var(--ember);
+            font-family: Arial, sans-serif;
+            font-size: .9rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
 
-    .chapter {
-      max-width: 820px;
-      font-size: 1.1rem;
-    }
+        .chapter {
+            max-width: 820px;
+            font-size: 1.1rem;
+        }
 
-    .chapter h3 {
-      color: var(--forest);
-      font-size: clamp(2rem, 5vw, 3.6rem);
-      margin-bottom: 22px;
-    }
+        .chapter h3 {
+            color: var(--forest);
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            margin-bottom: 22px;
+        }
 
-    .roadmap {
-      columns: 2;
-      column-gap: 36px;
-      padding-left: 1.2rem;
-    }
+        .roadmap {
+            columns: 2;
+            column-gap: 36px;
+            padding-left: 1.2rem;
+        }
 
-    .roadmap li {
-      break-inside: avoid;
-      margin-bottom: 8px;
-    }
+        .roadmap li {
+            break-inside: avoid;
+            margin-bottom: 8px;
+        }
 
-    .note {
-      color: #6a5949;
-      font-size: .98rem;
-    }
+        .note {
+            color: #6a5949;
+            font-size: .98rem;
+        }
 
-    footer {
-      padding: 28px 0 46px;
-      background: #171717;
-      color: #eadfca;
-      font-size: .96rem;
-    }
+        footer {
+            padding: 28px 0 46px;
+            background: #171717;
+            color: #eadfca;
+            font-size: .96rem;
+        }
 
-    @media (max-width: 820px) {
-      .hero { min-height: 88vh; background-position: 56% center; }
-      .section-head, .daily-grid, .plot-row { grid-template-columns: 1fr; }
-      .columns { grid-template-columns: 1fr; }
-      .roadmap { columns: 1; }
-      main section { padding: 44px 0; }
-    }
+        @media (max-width: 820px) {
+            .hero {
+                min-height: 88vh;
+                background-position: 56% center;
+            }
 
-    @media print {
-      .hero, .control-panel, footer { display: none; }
-      main section { border: 0; padding: 18px 0; }
-      .episode { box-shadow: none; border: 1px solid #ccc; }
-    }
-  </style>
+            .section-head,
+            .daily-grid,
+            .plot-row {
+                grid-template-columns: 1fr;
+            }
+
+            .columns {
+                grid-template-columns: 1fr;
+            }
+
+            .roadmap {
+                columns: 1;
+            }
+
+            main section {
+                padding: 44px 0;
+            }
+        }
+
+        @media print {
+
+            .hero,
+            .control-panel,
+            footer {
+                display: none;
+            }
+
+            main section {
+                border: 0;
+                padding: 18px 0;
+            }
+
+            .episode {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <header class="hero">
-    <div class="hero-inner">
-      <div class="kicker">A serialized story of grief, courage, and continuation</div>
-      <h1>The Story Remembers You</h1>
-      <p>A living forest waits behind an ordinary door. A late brother has left one final tale unfinished, and every day the next page opens.</p>
-      <div class="toolbar">
-        <a class="btn primary" href="#daily">Read Today's Continuation</a>
-        <a class="btn" href="#chapter-one">Begin Chapter One</a>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section id="daily" class="daily-band">
-      <div class="wrap daily-grid">
-        <aside class="control-panel">
-          <div class="kicker">Daily continuation</div>
-          <h2>Today's Page</h2>
-          <p>Each date opens a cinematic installment inspired by the love, imagination, and longing behind the stories you once shared. Change the names to make the draft feel closer to your heart; the page will keep them on this device.</p>
-
-          <div class="field">
-            <label for="listenerName">Younger sibling</label>
-            <input id="listenerName" value="Kofi" maxlength="28">
-          </div>
-          <div class="field">
-            <label for="brotherName">Beloved brother</label>
-            <input id="brotherName" value="Sena" maxlength="28">
-          </div>
-          <div class="field">
-            <label for="tone">Tone</label>
-            <select id="tone">
-              <option value="tender">Tender and brave</option>
-              <option value="dark">Darker and more dangerous</option>
-              <option value="mythic">Mythic and grand</option>
-            </select>
-          </div>
-          <div class="toolbar">
-            <button class="btn primary" id="saveNames">Save</button>
-            <button class="btn" id="previousEpisode">Previous</button>
-            <button class="btn" id="futureEpisode">Peek Ahead</button>
-            <button class="btn" id="downloadEpisode">Download</button>
-          </div>
-          <p class="note" id="nextNote"></p>
-        </aside>
-
-        <article class="episode" aria-live="polite">
-          <div class="meta" id="episodeMeta"></div>
-          <h3 id="episodeTitle"></h3>
-          <div class="episode-text" id="episodeText"></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="plot">
-      <div class="wrap">
-        <div class="section-head">
-          <h2>Full Plot</h2>
-          <p>The story begins as a private childhood ritual and grows into an adventure where memory itself becomes a place that can be defended.</p>
+    <header class="hero">
+        <div class="hero-inner">
+            <div class="kicker">A serialized story of grief, courage, and continuation</div>
+            <h1>The Story Remembers You</h1>
+            <p>A living forest waits behind an ordinary door. A late brother has left one final tale unfinished, and
+                every day the next page opens.</p>
+            <div class="toolbar">
+                <a class="btn primary" href="#daily">Read Today's Continuation</a>
+                <a class="btn" href="#chapter-one">Begin Chapter One</a>
+            </div>
         </div>
-        <div class="plot">
-          <div class="plot-row">
-            <strong>Premise</strong>
-            <p>After his brother dies of cancer, Kofi finds the notebook behind the bedtime stories that shaped his childhood. The stories were not only fiction. They were maps to Aroko, a hidden world beneath the roots of an ancient tree where unfinished tales keep loved ones from being forgotten.</p>
-          </div>
-          <div class="plot-row">
-            <strong>Act I</strong>
-            <p>Kofi discovers a doorway from his bedroom into the Breathing Forest. A lantern-lit guide called Ma Luma tells him that Sena bound part of his courage into the last unfinished story. If the story is abandoned, Aroko will fall silent and the memories of Sena will begin fading from the living world.</p>
-          </div>
-          <div class="plot-row">
-            <strong>Act II</strong>
-            <p>Kofi travels through the Kingdom of Old Names, the River That Repeats, and the City Beneath the Tree. He gathers three lost story-fragments: Sena's laugh, Sena's anger at injustice, and Sena's last blessing. Each fragment costs Kofi a truth he has avoided saying aloud.</p>
-          </div>
-          <div class="plot-row">
-            <strong>Act III</strong>
-            <p>The enemy, the Unremembering, tries to convince Kofi that grief is proof that love failed. Kofi learns the opposite: grief is love still moving. He finishes the final tale, not by bringing Sena back unchanged, but by carrying his voice forward. Aroko survives because Kofi becomes a storyteller too.</p>
-          </div>
-          <div class="plot-row">
-            <strong>Ending</strong>
-            <p>Kofi returns home with the notebook full again. Each night, a new blank page appears. He tells the story to children, cousins, friends, and eventually his own family. Sena lives on as a presence in choices, jokes, courage, and the simple command that began everything: continue.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    </header>
 
-    <section id="characters">
-      <div class="wrap">
-        <div class="section-head">
-          <h2>Main Characters</h2>
-          <p>These characters are built to carry adventure and feeling at the same time, so the story can thrill without losing its heart.</p>
-        </div>
-        <div class="columns">
-          <article class="tile">
-            <h3>Kofi</h3>
-            <p>The listener who becomes the teller. He is wounded by loss, but stubbornly curious. His gift is attention: he notices what others dismiss.</p>
-          </article>
-          <article class="tile">
-            <h3>Sena</h3>
-            <p>The late brother, remembered as the best of them. He does not return as a simple ghost. He appears through story, courage, jokes, warnings, and unfinished pages.</p>
-          </article>
-          <article class="tile">
-            <h3>Ma Luma</h3>
-            <p>A lantern keeper in Aroko. She guards the bridge between memory and invention, and teaches Kofi that stories can protect the living.</p>
-          </article>
-          <article class="tile">
-            <h3>The Unremembering</h3>
-            <p>A force that eats names, songs, and family stories. It cannot destroy love directly, so it tries to make people stop speaking of those they lost.</p>
-          </article>
-          <article class="tile">
-            <h3>Ama</h3>
-            <p>Kofi's cousin, practical and sharp. She follows him into the story-world because she refuses to let him carry grief alone.</p>
-          </article>
-          <article class="tile">
-            <h3>The Root King</h3>
-            <p>The old guardian beneath the great tree. He tests whether Kofi wants to escape grief or transform it into something useful.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+    <main>
+        <section id="daily" class="daily-band">
+            <div class="wrap daily-grid">
+                <aside class="control-panel">
+                    <div class="kicker">Daily continuation</div>
+                    <h2>Today's Page</h2>
+                    <p>Each date opens a cinematic installment inspired by the love, imagination, and longing behind the
+                        stories you once shared. Change the names to make the draft feel closer to your heart; the page
+                        will keep them on this device.</p>
 
-    <section id="chapter-one">
-      <div class="wrap chapter">
-        <h3>Chapter One: The Door That Remembered</h3>
-        <p>When Kofi was small, he believed his brother could open doors with words.</p>
-        <p>Not the wooden door at the front of the house, which complained every morning when their mother pushed it open. Not the rusted gate that scraped the ground and left orange dust on the fingers. Those doors were ordinary. Anyone could open them with a key, a shoulder, or enough impatience.</p>
-        <p>Sena opened the other kind.</p>
-        <p>At night, when rain tapped the roof and the lantern flame leaned from side to side, Sena would sit at the edge of Kofi's bed and lower his voice until even the walls seemed to bend closer.</p>
-        <p>"Then the forest began to breathe," Sena would say.</p>
-        <p>And the room would vanish.</p>
-        <p>The mosquito net became mist. The old wardrobe became a cliff face. The cracks in the ceiling became roads for stars. Kofi would pull the sheet up to his chin and watch his brother's eyes shine in the lantern light as if he had swallowed a piece of the moon.</p>
-        <p>"Continue," Kofi would whisper.</p>
-        <p>Sena always smiled at that word. He loved it more than applause. He loved it more than praise. Continue meant the story had caught fire.</p>
-        <p>"Tomorrow," Sena would say.</p>
-        <p>"No. Now."</p>
-        <p>"Tomorrow makes the story stronger."</p>
-        <p>Years passed. Kofi grew taller. His voice deepened. The lantern was replaced by a rechargeable lamp that buzzed when the battery was low. Still, whenever Sena came home from school or work or the hospital, Kofi found some reason to sit near him, waiting for the old magic to begin.</p>
-        <p>Then sickness entered the house quietly.</p>
-        <p>It did not arrive with thunder. It came in small changes: medicine bottles on the shelf, whispered phone calls, chairs moved closer to the bed, laughter that ended too quickly. Sena became thinner. His hands, once quick enough to clap rhythm into any table, began to rest open on his blanket.</p>
-        <p>But even when he was tired, he told stories.</p>
-        <p>The last one began three weeks before the end. It was about a city hidden beneath the roots of an ancient tree, a city where the dead did not sleep but stood guard over the names of those they loved.</p>
-        <p>"There is a darkness," Sena said, his voice dry but steady, "that feeds on forgotten names. It cannot eat a person while someone still tells the truth about them."</p>
-        <p>Kofi tried to laugh. "That is a serious story."</p>
-        <p>"The serious ones need jokes inside them."</p>
-        <p>"Then put jokes."</p>
-        <p>Sena smiled. "Tomorrow."</p>
-        <p>But tomorrow was weaker. The tomorrow after that was weaker still. The story stopped in the middle of a sentence, and for the first time in Kofi's life, no one continued it.</p>
-        <p>After the funeral, the house filled with people and food and prayers. Everyone said Sena's name gently, as if it might break. Kofi hated that. Sena had never been gentle with life. He had laughed loudly, argued fiercely, danced badly, forgiven quickly, and told stories like he was building bridges in the dark.</p>
-        <p>When the visitors left, silence settled in the corners.</p>
-        <p>On the fortieth night, rain came again.</p>
-        <p>Kofi could not sleep. He opened Sena's old wooden box because grief had made him restless and rude. Inside he found notebooks, ticket stubs, a cracked phone charger, three smooth stones, and a bundle wrapped in faded cloth.</p>
-        <p>The bundle held a black notebook.</p>
-        <p>Kofi knew it at once. Sena had carried it everywhere but never let anyone read it. The first pages were filled with maps of impossible places: a river drawn in a circle, a market built on clouds, a tower shaped like a listening ear. Then came titles from stories Kofi remembered with a pain so sharp it almost had a taste.</p>
-        <p>The Boy Who Sold His Shadow.</p>
-        <p>The Woman Who Borrowed Thunder.</p>
-        <p>The City Beneath the Tree.</p>
-        <p>On the final page, written in Sena's shaking hand, was one sentence.</p>
-        <p><em>If I cannot continue, you must.</em></p>
-        <p>The lamp flickered.</p>
-        <p>Kofi looked up.</p>
-        <p>The bedroom door, which had been closed, stood open. Beyond it was not the hallway. Beyond it was a forest washed in blue moonlight. Leaves stirred though there was no wind in the room. Somewhere far away, water rang over stone.</p>
-        <p>Then the forest began to breathe.</p>
-        <p>And from the darkness between the trees, his brother's voice called softly, "Do not be afraid. The story remembers you."</p>
-      </div>
-    </section>
+                    <div class="field">
+                        <label for="listenerName">Younger sibling</label>
+                        <input id="listenerName" value="Kofi" maxlength="28">
+                    </div>
+                    <div class="field">
+                        <label for="brotherName">Beloved brother</label>
+                        <input id="brotherName" value="Sena" maxlength="28">
+                    </div>
+                    <div class="field">
+                        <label for="tone">Tone</label>
+                        <select id="tone">
+                            <option value="tender">Tender and brave</option>
+                            <option value="dark">Darker and more dangerous</option>
+                            <option value="mythic">Mythic and grand</option>
+                        </select>
+                    </div>
+                    <div class="toolbar">
+                        <button class="btn primary" id="saveNames">Save</button>
+                        <button class="btn" id="previousEpisode">Previous</button>
+                        <button class="btn" id="futureEpisode">Peek Ahead</button>
+                        <button class="btn" id="downloadEpisode">Download</button>
+                    </div>
+                    <p class="note" id="nextNote"></p>
+                </aside>
 
-    <section id="roadmap">
-      <div class="wrap">
-        <div class="section-head">
-          <h2>Serialized Roadmap</h2>
-          <p>A long-running path for daily installments, designed so each day ends with the feeling your brother loved: come back tomorrow.</p>
-        </div>
-        <ol class="roadmap">
-          <li>The Door That Remembered</li>
-          <li>The Lantern Keeper</li>
-          <li>The Path of Listening Trees</li>
-          <li>The Market of Borrowed Voices</li>
-          <li>Ama Follows the Footprints</li>
-          <li>The River That Repeats</li>
-          <li>The Laugh Hidden in a Bottle</li>
-          <li>The Unremembering Speaks</li>
-          <li>The City Beneath the Tree</li>
-          <li>The Root King's First Question</li>
-          <li>The Night Sena Got Angry</li>
-          <li>The Bridge Made of Names</li>
-          <li>The House That Walked Away</li>
-          <li>The Song Without a Singer</li>
-          <li>The Second Door Opens</li>
-          <li>The Trial of the Empty Chair</li>
-          <li>The Feast of Remembered Things</li>
-          <li>The Map Bleeds Ink</li>
-          <li>The Cousin Who Refused to Leave</li>
-          <li>The Darkness Learns Kofi's Name</li>
-          <li>The Third Fragment</li>
-          <li>The Tree Turns Its Face</li>
-          <li>The Story Breaks</li>
-          <li>The Brother's Last Joke</li>
-          <li>The Name the Darkness Could Not Eat</li>
-          <li>The Return Through Rain</li>
-          <li>The Blank Page</li>
-          <li>The First Child Says Continue</li>
-        </ol>
-      </div>
-    </section>
-  </main>
+                <article class="episode" aria-live="polite">
+                    <div class="meta" id="episodeMeta"></div>
+                    <h3 id="episodeTitle"></h3>
+                    <div class="episode-text" id="episodeText"></div>
+                </article>
+            </div>
+        </section>
 
-  <footer>
-    <div class="wrap">Copyright © 2026 Felix Abayomi. All rights reserved.</div>
-  </footer>
+        <section id="plot">
+            <div class="wrap">
+                <div class="section-head">
+                    <h2>Full Plot</h2>
+                    <p>The story begins as a private childhood ritual and grows into an adventure where memory itself
+                        becomes a place that can be defended.</p>
+                </div>
+                <div class="plot">
+                    <div class="plot-row">
+                        <strong>Premise</strong>
+                        <p>After his brother dies of cancer, Kofi finds the notebook behind the bedtime stories that
+                            shaped his childhood. The stories were not only fiction. They were maps to Aroko, a hidden
+                            world beneath the roots of an ancient tree where unfinished tales keep loved ones from being
+                            forgotten.</p>
+                    </div>
+                    <div class="plot-row">
+                        <strong>Act I</strong>
+                        <p>Kofi discovers a doorway from his bedroom into the Breathing Forest. A lantern-lit guide
+                            called Ma Luma tells him that Sena bound part of his courage into the last unfinished story.
+                            If the story is abandoned, Aroko will fall silent and the memories of Sena will begin fading
+                            from the living world.</p>
+                    </div>
+                    <div class="plot-row">
+                        <strong>Act II</strong>
+                        <p>Kofi travels through the Kingdom of Old Names, the River That Repeats, and the City Beneath
+                            the Tree. He gathers three lost story-fragments: Sena's laugh, Sena's anger at injustice,
+                            and Sena's last blessing. Each fragment costs Kofi a truth he has avoided saying aloud.</p>
+                    </div>
+                    <div class="plot-row">
+                        <strong>Act III</strong>
+                        <p>The enemy, the Unremembering, tries to convince Kofi that grief is proof that love failed.
+                            Kofi learns the opposite: grief is love still moving. He finishes the final tale, not by
+                            bringing Sena back unchanged, but by carrying his voice forward. Aroko survives because Kofi
+                            becomes a storyteller too.</p>
+                    </div>
+                    <div class="plot-row">
+                        <strong>Ending</strong>
+                        <p>Kofi returns home with the notebook full again. Each night, a new blank page appears. He
+                            tells the story to children, cousins, friends, and eventually his own family. Sena lives on
+                            as a presence in choices, jokes, courage, and the simple command that began everything:
+                            continue.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <script>
-    const startDate = new Date("2026-07-04T00:00:00");
-    const scenes = [
-      {
-        title: "The Lantern Keeper",
-        image: "A line of gold moves between the trees, thin at first, then bright enough to paint every wet leaf with fire.",
-        conflict: "A woman carrying a brass lantern steps from the mist and studies {you} as if she has been expecting him for years. She does not ask why his hands are shaking. She only points to the black notebook pressed against his chest and says, \"That book did not choose you because you are ready. It chose you because you came.\"",
-        memory: "{you} thinks of all the nights {brother} stopped a story at the exact moment when the room felt too small to contain it. Back then, the pause had felt like punishment. Now he understands it was training.",
-        turn: "The Lantern Keeper kneels and places the flame close to the ground. A path appears, built from sentences {you} remembers hearing as a child, each one glowing for a breath before sinking into the soil.",
-        hook: "At the end of the path, a leaf folds itself into the shape of {brother}'s handwriting and writes one word: listen."
-      },
-      {
-        title: "The Listening Trees",
-        image: "Morning comes to the forest without a sun. The light rises from the bark, from old roots, from droplets trembling on leaves like tiny glass bells.",
-        conflict: "{you} walks until the trees begin speaking in broken pieces of old evenings. One trunk murmurs, \"Continue.\" Another answers, \"Tomorrow makes the story stronger.\" The words are not a recording. They breathe. They wait for him to answer.",
-        memory: "For a moment, {you} is back in the room where he used to beg {brother} for one more scene. He remembers the angle of his brother's smile, the way joy could sit beside tiredness and still shine through.",
-        turn: "Then one tree speaks a sentence {you} has never heard before: \"A story is not the person you lost. It is the road love builds after loss.\" The bark splits open, revealing a narrow stairway descending into blue dark.",
-        hook: "From below comes a soft knock, three times, exactly the rhythm {brother} used when he wanted to be let in."
-      },
-      {
-        title: "The Market of Borrowed Voices",
-        image: "The forest thins into a market under red cloth canopies, where every stall hums with voices trapped inside jars, shells, cups, and folded paper.",
-        conflict: "A trader with silver rings on every finger offers {you} a perfect imitation of {brother}'s laugh. The price is simple: one true memory surrendered forever. {you} reaches for the jar before he understands how badly he wants it.",
-        memory: "The laugh inside the glass is almost right. It has warmth, mischief, and that rising note that used to make others laugh before the joke was even finished. Almost right is the cruelest kind of wrong.",
-        turn: "Before {you} can trade, the jar cracks. The laugh escapes, circles the market, and lands in the notebook as ink. Across the page, a new instruction appears: never buy what love has already given you.",
-        hook: "A hooded figure snatches the page and runs, leaving behind a trail of falling commas."
-      },
-      {
-        title: "The River That Repeats",
-        image: "A river bends through the world in a perfect circle, carrying the same silver water past the same stone again and again.",
-        conflict: "{you} steps into it and the forest vanishes. He is standing in an ordinary afternoon with {brother}, the kind of day no one knows to treasure while it is happening. There is dust in the light. There is laughter in the next room. There is still time.",
-        memory: "The pain of it nearly drives {you} to his knees. Not because the memory is dramatic, but because it is not. Love often hides inside ordinary hours and waits until later to reveal its size.",
-        turn: "The river asks, \"Would you stay here if staying meant the story ended?\" {you} looks at the younger version of himself, then at {brother}, and understands that memory is a place to visit, not a house to live in.",
-        hook: "When he opens his wet hand, he is holding a stone warm as a heartbeat."
-      },
-      {
-        title: "Ama at the Door",
-        image: "Back in the real room, mud dries on the floorboards in the shape of footprints that do not belong to anyone in the house.",
-        conflict: "Ama sees them before {you} can hide them. She does not scream. She does not pray. She picks up a flashlight and says, \"If grief has a door, nobody should walk through it alone.\"",
-        memory: "{you} wants to refuse her, but he remembers how {brother} hated lonely bravery. He had once said courage becomes foolish when it refuses every helping hand.",
-        turn: "The bedroom door opens again, and this time the forest is louder. Ama takes one step through and laughs despite herself, because terror and wonder have arrived wearing the same face.",
-        hook: "The door shuts behind them, and from the other side, someone locks it."
-      },
-      {
-        title: "The First Hunger",
-        image: "Past the second ridge, the forest stops making sound. No insects, no wind, no creak of branches. Even footsteps seem embarrassed to exist.",
-        conflict: "The Unremembering appears as a blankness between two trees, a place where the eye slides away. It speaks without a mouth: \"I can make it stop hurting.\" The offer is not loud. That makes it more dangerous.",
-        memory: "{you} feels the temptation like cool water. To stop hurting. To stop reaching for a voice that cannot answer in the old way. To let the name become easier to say by saying it less.",
-        turn: "Ama grips his sleeve. The notebook grows hot. {you} says {brother}'s name once, then again, and each time the blankness flinches. Pain does not disappear, but it stands beside him instead of over him.",
-        hook: "The Unremembering retreats, leaving a hole in the air shaped like a keyhole."
-      },
-      {
-        title: "The City Beneath the Tree",
-        image: "The great tree rises wider than a town, its roots arching open like gates carved by time itself.",
-        conflict: "Below it lies Aroko, a city lit by thousands of name-lamps. Each lamp burns for someone remembered by the living. As {you} enters, one lamp near the center flickers low, and the Lantern Keeper whispers, \"That one is tied to the unfinished story.\"",
-        memory: "{you} knows whose lamp it is before anyone says so. He feels it in the sudden tightness of his throat, in the way the city seems to lean toward him, waiting.",
-        turn: "The Root King sits on a throne grown from dark wood and asks the question {you} fears most: \"Do you want your brother back, or do you want to become brave enough to carry him forward?\"",
-        hook: "Before {you} can answer, every lamp in the city goes out."
-      },
-      {
-        title: "The Trial of the Empty Chair",
-        image: "A hall forms from roots and moonlight, and at its center waits a single empty chair.",
-        conflict: "The court of Aroko calls {you} to stand before it. The charge is silence. Every time he avoided saying {brother}'s name because it hurt, every time he smiled so others would not worry, every swallowed sentence gathers in the room like smoke.",
-        memory: "{you} wants to defend himself, but grief is complicated. Sometimes silence was survival. Sometimes it was fear. Sometimes it was both, twisted together.",
-        turn: "The empty chair does not accuse him. It simply waits. At last {you} speaks one true thing: \"I was afraid that if I talked about him, I would fall apart.\" The smoke thins. The chair turns toward him as if listening.",
-        hook: "A voice from the chair says, \"Then fall apart honestly, and build from there.\""
-      },
-      {
-        title: "The Feast of Remembered Things",
-        image: "Long tables fill a square beneath the roots, covered with dishes that steam with memories instead of heat.",
-        conflict: "To pass through the square, every traveler must taste one memory they have avoided. Ama chooses first and begins to cry before the spoon reaches her mouth. {you} realizes he has not been the only one carrying rooms inside him.",
-        memory: "When his turn comes, the dish tastes like late-night stories, tired laughter, medicine bitterness, and rain on the roof. It is too much. It is not enough. It is his.",
-        turn: "Across the table, the Lantern Keeper says, \"Love does not become smaller because it hurts. Sometimes pain is the shadow cast by something enormous.\"",
-        hook: "Under {you}'s bowl, a map appears, and the ink is moving."
-      },
-      {
-        title: "The Room of Unsaid Things",
-        image: "The moving map leads to a door with no handle, only a mirror dark enough to show the parts of a face people hide.",
-        conflict: "{you} enters alone. Inside are all the sentences he never said: thank you, forgive me, I miss you, I was angry, I was scared, I still listen for you. They hang from the ceiling like lanterns that never learned to burn.",
-        memory: "At the center of the room waits the memory of {brother}, not whole, not returned, but present in the way a song can be present after the singer has gone quiet.",
-        turn: "The memory smiles with unbearable kindness. \"You do not have to make my death meaningful,\" it says. \"Make your life honest. That is enough.\" One lantern catches fire.",
-        hook: "Then another. Then all of them. And the room begins to open beneath his feet."
-      },
-      {
-        title: "The Story Breaks",
-        image: "Sentences fall from the sky in torn strips, fluttering across Aroko like ash-colored rain.",
-        conflict: "The Unremembering has entered the notebook. Pages twist. Maps lie. Names smear into unreadable ink. The city panics, but {you} hears {brother}'s old storytelling voice beneath the chaos: when the plot breaks, follow the heart.",
-        memory: "He remembers being young, impatient, wide-eyed, believing every pause was a promise. Maybe it was. Maybe every unfinished story had been teaching him how to stand inside uncertainty.",
-        turn: "{you} stops chasing the scattered pages. He opens the notebook to a blank sheet and writes the first sentence himself. The forest holds its breath. Even the darkness waits to see what he will choose.",
-        hook: "The sentence glows, and somewhere far away, {brother} laughs like dawn entering a locked room."
-      },
-      {
-        title: "The Name It Could Not Eat",
-        image: "At the edge of Aroko, the darkness gathers into a wall tall enough to hide the stars.",
-        conflict: "The Unremembering demands one final bargain: stop telling the story, and it will stop opening old wounds. {you} feels the exhaustion in his bones. He is tired of being brave. He is tired of missing someone with his whole body.",
-        memory: "Then he understands that missing {brother} is not a failure to heal. It is proof that love built something strong enough to remain.",
-        turn: "{you} speaks {brother}'s name with every truth attached: the laughter, the courage, the flaws, the tenderness, the hard days, the unfinished sentence. The name becomes too full for the darkness to swallow.",
-        hook: "The wall cracks, and behind it waits a new morning with a blank page at its center."
-      }
-    ];
+        <section id="characters">
+            <div class="wrap">
+                <div class="section-head">
+                    <h2>Main Characters</h2>
+                    <p>These characters are built to carry adventure and feeling at the same time, so the story can
+                        thrill without losing its heart.</p>
+                </div>
+                <div class="columns">
+                    <article class="tile">
+                        <h3>Kofi</h3>
+                        <p>The listener who becomes the teller. He is wounded by loss, but stubbornly curious. His gift
+                            is attention: he notices what others dismiss.</p>
+                    </article>
+                    <article class="tile">
+                        <h3>Sena</h3>
+                        <p>The late brother, remembered as the best of them. He does not return as a simple ghost. He
+                            appears through story, courage, jokes, warnings, and unfinished pages.</p>
+                    </article>
+                    <article class="tile">
+                        <h3>Ma Luma</h3>
+                        <p>A lantern keeper in Aroko. She guards the bridge between memory and invention, and teaches
+                            Kofi that stories can protect the living.</p>
+                    </article>
+                    <article class="tile">
+                        <h3>The Unremembering</h3>
+                        <p>A force that eats names, songs, and family stories. It cannot destroy love directly, so it
+                            tries to make people stop speaking of those they lost.</p>
+                    </article>
+                    <article class="tile">
+                        <h3>Ama</h3>
+                        <p>Kofi's cousin, practical and sharp. She follows him into the story-world because she refuses
+                            to let him carry grief alone.</p>
+                    </article>
+                    <article class="tile">
+                        <h3>The Root King</h3>
+                        <p>The old guardian beneath the great tree. He tests whether Kofi wants to escape grief or
+                            transform it into something useful.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-    const toneLines = {
-      tender: "The air is gentle, but not soft. It carries the ache of love that has learned to stand upright.",
-      dark: "The shadows press close enough to feel like hands, and every kindness has to fight for its breath.",
-      mythic: "Above the trees, old stars gather like witnesses, and the road seems older than language."
-    };
+        <section id="chapter-one">
+            <div class="wrap chapter">
+                <h3>Chapter One: The Door That Remembered</h3>
+                <p>When Kofi was small, he believed his brother could open doors with words.</p>
+                <p>Not the wooden door at the front of the house, which complained every morning when their mother
+                    pushed it open. Not the rusted gate that scraped the ground and left orange dust on the fingers.
+                    Those doors were ordinary. Anyone could open them with a key, a shoulder, or enough impatience.</p>
+                <p>Sena opened the other kind.</p>
+                <p>At night, when rain tapped the roof and the lantern flame leaned from side to side, Sena would sit at
+                    the edge of Kofi's bed and lower his voice until even the walls seemed to bend closer.</p>
+                <p>"Then the forest began to breathe," Sena would say.</p>
+                <p>And the room would vanish.</p>
+                <p>The mosquito net became mist. The old wardrobe became a cliff face. The cracks in the ceiling became
+                    roads for stars. Kofi would pull the sheet up to his chin and watch his brother's eyes shine in the
+                    lantern light as if he had swallowed a piece of the moon.</p>
+                <p>"Continue," Kofi would whisper.</p>
+                <p>Sena always smiled at that word. He loved it more than applause. He loved it more than praise.
+                    Continue meant the story had caught fire.</p>
+                <p>"Tomorrow," Sena would say.</p>
+                <p>"No. Now."</p>
+                <p>"Tomorrow makes the story stronger."</p>
+                <p>Years passed. Kofi grew taller. His voice deepened. The lantern was replaced by a rechargeable lamp
+                    that buzzed when the battery was low. Still, whenever Sena came home from school or work or the
+                    hospital, Kofi found some reason to sit near him, waiting for the old magic to begin.</p>
+                <p>Then sickness entered the house quietly.</p>
+                <p>It did not arrive with thunder. It came in small changes: medicine bottles on the shelf, whispered
+                    phone calls, chairs moved closer to the bed, laughter that ended too quickly. Sena became thinner.
+                    His hands, once quick enough to clap rhythm into any table, began to rest open on his blanket.</p>
+                <p>But even when he was tired, he told stories.</p>
+                <p>The last one began three weeks before the end. It was about a city hidden beneath the roots of an
+                    ancient tree, a city where the dead did not sleep but stood guard over the names of those they
+                    loved.</p>
+                <p>"There is a darkness," Sena said, his voice dry but steady, "that feeds on forgotten names. It cannot
+                    eat a person while someone still tells the truth about them."</p>
+                <p>Kofi tried to laugh. "That is a serious story."</p>
+                <p>"The serious ones need jokes inside them."</p>
+                <p>"Then put jokes."</p>
+                <p>Sena smiled. "Tomorrow."</p>
+                <p>But tomorrow was weaker. The tomorrow after that was weaker still. The story stopped in the middle of
+                    a sentence, and for the first time in Kofi's life, no one continued it.</p>
+                <p>After the funeral, the house filled with people and food and prayers. Everyone said Sena's name
+                    gently, as if it might break. Kofi hated that. Sena had never been gentle with life. He had laughed
+                    loudly, argued fiercely, danced badly, forgiven quickly, and told stories like he was building
+                    bridges in the dark.</p>
+                <p>When the visitors left, silence settled in the corners.</p>
+                <p>On the fortieth night, rain came again.</p>
+                <p>Kofi could not sleep. He opened Sena's old wooden box because grief had made him restless and rude.
+                    Inside he found notebooks, ticket stubs, a cracked phone charger, three smooth stones, and a bundle
+                    wrapped in faded cloth.</p>
+                <p>The bundle held a black notebook.</p>
+                <p>Kofi knew it at once. Sena had carried it everywhere but never let anyone read it. The first pages
+                    were filled with maps of impossible places: a river drawn in a circle, a market built on clouds, a
+                    tower shaped like a listening ear. Then came titles from stories Kofi remembered with a pain so
+                    sharp it almost had a taste.</p>
+                <p>The Boy Who Sold His Shadow.</p>
+                <p>The Woman Who Borrowed Thunder.</p>
+                <p>The City Beneath the Tree.</p>
+                <p>On the final page, written in Sena's shaking hand, was one sentence.</p>
+                <p><em>If I cannot continue, you must.</em></p>
+                <p>The lamp flickered.</p>
+                <p>Kofi looked up.</p>
+                <p>The bedroom door, which had been closed, stood open. Beyond it was not the hallway. Beyond it was a
+                    forest washed in blue moonlight. Leaves stirred though there was no wind in the room. Somewhere far
+                    away, water rang over stone.</p>
+                <p>Then the forest began to breathe.</p>
+                <p>And from the darkness between the trees, his brother's voice called softly, "Do not be afraid. The
+                    story remembers you."</p>
+            </div>
+        </section>
 
-    const titleEl = document.getElementById("episodeTitle");
-    const textEl = document.getElementById("episodeText");
-    const metaEl = document.getElementById("episodeMeta");
-    const nextNote = document.getElementById("nextNote");
-    const listenerInput = document.getElementById("listenerName");
-    const brotherInput = document.getElementById("brotherName");
-    const toneInput = document.getElementById("tone");
-    const previousButton = document.getElementById("previousEpisode");
-    let offset = 0;
+        <section id="roadmap">
+            <div class="wrap">
+                <div class="section-head">
+                    <h2>Serialized Roadmap</h2>
+                    <p>A long-running path for daily installments, designed so each day ends with the feeling your
+                        brother loved: come back tomorrow.</p>
+                </div>
+                <ol class="roadmap">
+                    <li>The Door That Remembered</li>
+                    <li>The Lantern Keeper</li>
+                    <li>The Path of Listening Trees</li>
+                    <li>The Market of Borrowed Voices</li>
+                    <li>Ama Follows the Footprints</li>
+                    <li>The River That Repeats</li>
+                    <li>The Laugh Hidden in a Bottle</li>
+                    <li>The Unremembering Speaks</li>
+                    <li>The City Beneath the Tree</li>
+                    <li>The Root King's First Question</li>
+                    <li>The Night Sena Got Angry</li>
+                    <li>The Bridge Made of Names</li>
+                    <li>The House That Walked Away</li>
+                    <li>The Song Without a Singer</li>
+                    <li>The Second Door Opens</li>
+                    <li>The Trial of the Empty Chair</li>
+                    <li>The Feast of Remembered Things</li>
+                    <li>The Map Bleeds Ink</li>
+                    <li>The Cousin Who Refused to Leave</li>
+                    <li>The Darkness Learns Kofi's Name</li>
+                    <li>The Third Fragment</li>
+                    <li>The Tree Turns Its Face</li>
+                    <li>The Story Breaks</li>
+                    <li>The Brother's Last Joke</li>
+                    <li>The Name the Darkness Could Not Eat</li>
+                    <li>The Return Through Rain</li>
+                    <li>The Blank Page</li>
+                    <li>The First Child Says Continue</li>
+                </ol>
+            </div>
+        </section>
+    </main>
 
-    function cleanName(value, fallback) {
-      const trimmed = value.trim().replace(/[<>]/g, "");
-      return trimmed || fallback;
-    }
+    <footer>
+        <div class="wrap">Copyright © 2026 Felix Abayomi. All rights reserved.</div>
+    </footer>
 
-    function dayNumber(date) {
-      const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      return Math.max(0, Math.floor((today - startDate) / 86400000));
-    }
+    <script>
+        const startDate = new Date("2026-07-04T00:00:00");
+        const scenes = [
+            {
+                title: "The Lantern Keeper",
+                image: "A line of gold moves between the trees, thin at first, then bright enough to paint every wet leaf with fire.",
+                conflict: "A woman carrying a brass lantern steps from the mist and studies {you} as if she has been expecting him for years. She does not ask why his hands are shaking. She only points to the black notebook pressed against his chest and says, \"That book did not choose you because you are ready. It chose you because you came.\"",
+                memory: "{you} thinks of all the nights {brother} stopped a story at the exact moment when the room felt too small to contain it. Back then, the pause had felt like punishment. Now he understands it was training.",
+                turn: "The Lantern Keeper kneels and places the flame close to the ground. A path appears, built from sentences {you} remembers hearing as a child, each one glowing for a breath before sinking into the soil.",
+                hook: "At the end of the path, a leaf folds itself into the shape of {brother}'s handwriting and writes one word: listen."
+            },
+            {
+                title: "The Listening Trees",
+                image: "Morning comes to the forest without a sun. The light rises from the bark, from old roots, from droplets trembling on leaves like tiny glass bells.",
+                conflict: "{you} walks until the trees begin speaking in broken pieces of old evenings. One trunk murmurs, \"Continue.\" Another answers, \"Tomorrow makes the story stronger.\" The words are not a recording. They breathe. They wait for him to answer.",
+                memory: "For a moment, {you} is back in the room where he used to beg {brother} for one more scene. He remembers the angle of his brother's smile, the way joy could sit beside tiredness and still shine through.",
+                turn: "Then one tree speaks a sentence {you} has never heard before: \"A story is not the person you lost. It is the road love builds after loss.\" The bark splits open, revealing a narrow stairway descending into blue dark.",
+                hook: "From below comes a soft knock, three times, exactly the rhythm {brother} used when he wanted to be let in."
+            },
+            {
+                title: "The Market of Borrowed Voices",
+                image: "The forest thins into a market under red cloth canopies, where every stall hums with voices trapped inside jars, shells, cups, and folded paper.",
+                conflict: "A trader with silver rings on every finger offers {you} a perfect imitation of {brother}'s laugh. The price is simple: one true memory surrendered forever. {you} reaches for the jar before he understands how badly he wants it.",
+                memory: "The laugh inside the glass is almost right. It has warmth, mischief, and that rising note that used to make others laugh before the joke was even finished. Almost right is the cruelest kind of wrong.",
+                turn: "Before {you} can trade, the jar cracks. The laugh escapes, circles the market, and lands in the notebook as ink. Across the page, a new instruction appears: never buy what love has already given you.",
+                hook: "A hooded figure snatches the page and runs, leaving behind a trail of falling commas."
+            },
+            {
+                title: "The River That Repeats",
+                image: "A river bends through the world in a perfect circle, carrying the same silver water past the same stone again and again.",
+                conflict: "{you} steps into it and the forest vanishes. He is standing in an ordinary afternoon with {brother}, the kind of day no one knows to treasure while it is happening. There is dust in the light. There is laughter in the next room. There is still time.",
+                memory: "The pain of it nearly drives {you} to his knees. Not because the memory is dramatic, but because it is not. Love often hides inside ordinary hours and waits until later to reveal its size.",
+                turn: "The river asks, \"Would you stay here if staying meant the story ended?\" {you} looks at the younger version of himself, then at {brother}, and understands that memory is a place to visit, not a house to live in.",
+                hook: "When he opens his wet hand, he is holding a stone warm as a heartbeat."
+            },
+            {
+                title: "Ama at the Door",
+                image: "Back in the real room, mud dries on the floorboards in the shape of footprints that do not belong to anyone in the house.",
+                conflict: "Ama sees them before {you} can hide them. She does not scream. She does not pray. She picks up a flashlight and says, \"If grief has a door, nobody should walk through it alone.\"",
+                memory: "{you} wants to refuse her, but he remembers how {brother} hated lonely bravery. He had once said courage becomes foolish when it refuses every helping hand.",
+                turn: "The bedroom door opens again, and this time the forest is louder. Ama takes one step through and laughs despite herself, because terror and wonder have arrived wearing the same face.",
+                hook: "The door shuts behind them, and from the other side, someone locks it."
+            },
+            {
+                title: "The First Hunger",
+                image: "Past the second ridge, the forest stops making sound. No insects, no wind, no creak of branches. Even footsteps seem embarrassed to exist.",
+                conflict: "The Unremembering appears as a blankness between two trees, a place where the eye slides away. It speaks without a mouth: \"I can make it stop hurting.\" The offer is not loud. That makes it more dangerous.",
+                memory: "{you} feels the temptation like cool water. To stop hurting. To stop reaching for a voice that cannot answer in the old way. To let the name become easier to say by saying it less.",
+                turn: "Ama grips his sleeve. The notebook grows hot. {you} says {brother}'s name once, then again, and each time the blankness flinches. Pain does not disappear, but it stands beside him instead of over him.",
+                hook: "The Unremembering retreats, leaving a hole in the air shaped like a keyhole."
+            },
+            {
+                title: "The City Beneath the Tree",
+                image: "The great tree rises wider than a town, its roots arching open like gates carved by time itself.",
+                conflict: "Below it lies Aroko, a city lit by thousands of name-lamps. Each lamp burns for someone remembered by the living. As {you} enters, one lamp near the center flickers low, and the Lantern Keeper whispers, \"That one is tied to the unfinished story.\"",
+                memory: "{you} knows whose lamp it is before anyone says so. He feels it in the sudden tightness of his throat, in the way the city seems to lean toward him, waiting.",
+                turn: "The Root King sits on a throne grown from dark wood and asks the question {you} fears most: \"Do you want your brother back, or do you want to become brave enough to carry him forward?\"",
+                hook: "Before {you} can answer, every lamp in the city goes out."
+            },
+            {
+                title: "The Trial of the Empty Chair",
+                image: "A hall forms from roots and moonlight, and at its center waits a single empty chair.",
+                conflict: "The court of Aroko calls {you} to stand before it. The charge is silence. Every time he avoided saying {brother}'s name because it hurt, every time he smiled so others would not worry, every swallowed sentence gathers in the room like smoke.",
+                memory: "{you} wants to defend himself, but grief is complicated. Sometimes silence was survival. Sometimes it was fear. Sometimes it was both, twisted together.",
+                turn: "The empty chair does not accuse him. It simply waits. At last {you} speaks one true thing: \"I was afraid that if I talked about him, I would fall apart.\" The smoke thins. The chair turns toward him as if listening.",
+                hook: "A voice from the chair says, \"Then fall apart honestly, and build from there.\""
+            },
+            {
+                title: "The Feast of Remembered Things",
+                image: "Long tables fill a square beneath the roots, covered with dishes that steam with memories instead of heat.",
+                conflict: "To pass through the square, every traveler must taste one memory they have avoided. Ama chooses first and begins to cry before the spoon reaches her mouth. {you} realizes he has not been the only one carrying rooms inside him.",
+                memory: "When his turn comes, the dish tastes like late-night stories, tired laughter, medicine bitterness, and rain on the roof. It is too much. It is not enough. It is his.",
+                turn: "Across the table, the Lantern Keeper says, \"Love does not become smaller because it hurts. Sometimes pain is the shadow cast by something enormous.\"",
+                hook: "Under {you}'s bowl, a map appears, and the ink is moving."
+            },
+            {
+                title: "The Room of Unsaid Things",
+                image: "The moving map leads to a door with no handle, only a mirror dark enough to show the parts of a face people hide.",
+                conflict: "{you} enters alone. Inside are all the sentences he never said: thank you, forgive me, I miss you, I was angry, I was scared, I still listen for you. They hang from the ceiling like lanterns that never learned to burn.",
+                memory: "At the center of the room waits the memory of {brother}, not whole, not returned, but present in the way a song can be present after the singer has gone quiet.",
+                turn: "The memory smiles with unbearable kindness. \"You do not have to make my death meaningful,\" it says. \"Make your life honest. That is enough.\" One lantern catches fire.",
+                hook: "Then another. Then all of them. And the room begins to open beneath his feet."
+            },
+            {
+                title: "The Story Breaks",
+                image: "Sentences fall from the sky in torn strips, fluttering across Aroko like ash-colored rain.",
+                conflict: "The Unremembering has entered the notebook. Pages twist. Maps lie. Names smear into unreadable ink. The city panics, but {you} hears {brother}'s old storytelling voice beneath the chaos: when the plot breaks, follow the heart.",
+                memory: "He remembers being young, impatient, wide-eyed, believing every pause was a promise. Maybe it was. Maybe every unfinished story had been teaching him how to stand inside uncertainty.",
+                turn: "{you} stops chasing the scattered pages. He opens the notebook to a blank sheet and writes the first sentence himself. The forest holds its breath. Even the darkness waits to see what he will choose.",
+                hook: "The sentence glows, and somewhere far away, {brother} laughs like dawn entering a locked room."
+            },
+            {
+                title: "The Name It Could Not Eat",
+                image: "At the edge of Aroko, the darkness gathers into a wall tall enough to hide the stars.",
+                conflict: "The Unremembering demands one final bargain: stop telling the story, and it will stop opening old wounds. {you} feels the exhaustion in his bones. He is tired of being brave. He is tired of missing someone with his whole body.",
+                memory: "Then he understands that missing {brother} is not a failure to heal. It is proof that love built something strong enough to remain.",
+                turn: "{you} speaks {brother}'s name with every truth attached: the laughter, the courage, the flaws, the tenderness, the hard days, the unfinished sentence. The name becomes too full for the darkness to swallow.",
+                hook: "The wall cracks, and behind it waits a new morning with a blank page at its center."
+            }
+        ];
 
-    function sentence(text, names) {
-      return text.replaceAll("{you}", names.you).replaceAll("{brother}", names.brother);
-    }
+        const toneLines = {
+            tender: "The air is gentle, but not soft. It carries the ache of love that has learned to stand upright.",
+            dark: "The shadows press close enough to feel like hands, and every kindness has to fight for its breath.",
+            mythic: "Above the trees, old stars gather like witnesses, and the road seems older than language."
+        };
 
-    function textureLine(day, tone) {
-      const lines = {
-        tender: [
-          "The scene moves slowly, the way a camera lingers when it knows the smallest gesture matters.",
-          "Nothing is rushed; even the silence is allowed to have a face.",
-          "The world feels wounded, but there is warmth under the wound."
-        ],
-        dark: [
-          "The light is thin, and every shadow seems to be listening for weakness.",
-          "The scene tightens like a held breath, beautiful and dangerous at the same time.",
-          "Hope is present, but it has to keep its back against the wall."
-        ],
-        mythic: [
-          "The moment feels older than memory, as if generations are watching from the edges of the page.",
-          "Every step sounds ceremonial, like the world is naming him as he walks.",
-          "The air carries the weight of legend, but the ache inside it is human."
-        ]
-      };
-      return lines[tone][day % lines[tone].length];
-    }
+        const titleEl = document.getElementById("episodeTitle");
+        const textEl = document.getElementById("episodeText");
+        const metaEl = document.getElementById("episodeMeta");
+        const nextNote = document.getElementById("nextNote");
+        const listenerInput = document.getElementById("listenerName");
+        const brotherInput = document.getElementById("brotherName");
+        const toneInput = document.getElementById("tone");
+        const previousButton = document.getElementById("previousEpisode");
+        let offset = 0;
 
-    function buildEpisode(day, names, tone) {
-      const scene = scenes[day % scenes.length];
-      const part = day + 1;
-      const cycle = Math.floor(day / scenes.length) + 1;
-      const title = "Chapter " + part + ": " + scene.title;
-      const closing = cycle > 1
-        ? "The story has circled this place before, but grief is never the same river twice. This time, " + names.you + " notices a detail the old version of himself missed."
-        : "And because every true story knows when to close its hand, the page ends there for today.";
+        function cleanName(value, fallback) {
+            const trimmed = value.trim().replace(/[<>]/g, "");
+            return trimmed || fallback;
+        }
 
-      return {
-        title,
-        meta: "Day " + (day + 1) + " of the living serial" + (cycle > 1 ? " | Cycle " + cycle : ""),
-        paragraphs: [
-          sentence(scene.image, names) + " " + textureLine(day, tone),
-          sentence(scene.conflict, names),
-          sentence(scene.memory, names),
-          sentence(scene.turn, names),
-          sentence(scene.hook, names),
-          closing
-        ]
-      };
-    }
+        function dayNumber(date) {
+            const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            return Math.max(0, Math.floor((today - startDate) / 86400000));
+        }
 
-    function render() {
-      const saved = JSON.parse(localStorage.getItem("storyNames") || "{}");
-      if (saved.you && document.activeElement !== listenerInput) listenerInput.value = saved.you;
-      if (saved.brother && document.activeElement !== brotherInput) brotherInput.value = saved.brother;
-      if (saved.tone && document.activeElement !== toneInput) toneInput.value = saved.tone;
+        function sentence(text, names) {
+            return text.replaceAll("{you}", names.you).replaceAll("{brother}", names.brother);
+        }
 
-      const names = {
-        you: cleanName(listenerInput.value, "Kofi"),
-        brother: cleanName(brotherInput.value, "Sena")
-      };
-      const tone = toneInput.value || "tender";
-      const today = new Date();
-      const day = dayNumber(today) + offset;
-      const episode = buildEpisode(day, names, tone);
-      titleEl.textContent = episode.title;
-      metaEl.textContent = episode.meta + " | " + today.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-      textEl.innerHTML = episode.paragraphs.map((p) => "<p>" + p + "</p>").join("");
-      const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-      previousButton.disabled = offset === 0;
-      nextNote.textContent = offset
-        ? "Peek mode is " + offset + " day" + (offset === 1 ? "" : "s") + " ahead. Use Previous to step back toward today's real installment."
-        : "Next automatic installment: " + tomorrow.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) + ".";
-    }
+        function textureLine(day, tone) {
+            const lines = {
+                tender: [
+                    "The scene moves slowly, the way a camera lingers when it knows the smallest gesture matters.",
+                    "Nothing is rushed; even the silence is allowed to have a face.",
+                    "The world feels wounded, but there is warmth under the wound."
+                ],
+                dark: [
+                    "The light is thin, and every shadow seems to be listening for weakness.",
+                    "The scene tightens like a held breath, beautiful and dangerous at the same time.",
+                    "Hope is present, but it has to keep its back against the wall."
+                ],
+                mythic: [
+                    "The moment feels older than memory, as if generations are watching from the edges of the page.",
+                    "Every step sounds ceremonial, like the world is naming him as he walks.",
+                    "The air carries the weight of legend, but the ache inside it is human."
+                ]
+            };
+            return lines[tone][day % lines[tone].length];
+        }
 
-    document.getElementById("saveNames").addEventListener("click", () => {
-      localStorage.setItem("storyNames", JSON.stringify({
-        you: cleanName(listenerInput.value, "Kofi"),
-        brother: cleanName(brotherInput.value, "Sena"),
-        tone: toneInput.value
-      }));
-      offset = 0;
-      render();
-    });
+        function buildEpisode(day, names, tone) {
+            const scene = scenes[day % scenes.length];
+            const part = day + 1;
+            const cycle = Math.floor(day / scenes.length) + 1;
+            const title = "Chapter " + part + ": " + scene.title;
+            const closing = cycle > 1
+                ? "The story has circled this place before, but grief is never the same river twice. This time, " + names.you + " notices a detail the old version of himself missed."
+                : "And because every true story knows when to close its hand, the page ends there for today.";
 
-    document.getElementById("futureEpisode").addEventListener("click", () => {
-      offset += 1;
-      render();
-    });
+            return {
+                title,
+                meta: "Day " + (day + 1) + " of the living serial" + (cycle > 1 ? " | Cycle " + cycle : ""),
+                paragraphs: [
+                    sentence(scene.image, names) + " " + textureLine(day, tone),
+                    sentence(scene.conflict, names),
+                    sentence(scene.memory, names),
+                    sentence(scene.turn, names),
+                    sentence(scene.hook, names),
+                    closing
+                ]
+            };
+        }
 
-    previousButton.addEventListener("click", () => {
-      offset = Math.max(0, offset - 1);
-      render();
-    });
+        function render() {
+            const saved = JSON.parse(localStorage.getItem("storyNames") || "{}");
+            if (saved.you && document.activeElement !== listenerInput) listenerInput.value = saved.you;
+            if (saved.brother && document.activeElement !== brotherInput) brotherInput.value = saved.brother;
+            if (saved.tone && document.activeElement !== toneInput) toneInput.value = saved.tone;
 
-    document.getElementById("downloadEpisode").addEventListener("click", () => {
-      const text = titleEl.textContent + "\n" + metaEl.textContent + "\n\n" + Array.from(textEl.querySelectorAll("p")).map((p) => p.textContent).join("\n\n");
-      const blob = new Blob([text], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "todays-continuation.txt";
-      link.click();
-      URL.revokeObjectURL(url);
-    });
+            const names = {
+                you: cleanName(listenerInput.value, "Kofi"),
+                brother: cleanName(brotherInput.value, "Sena")
+            };
+            const tone = toneInput.value || "tender";
+            const today = new Date();
+            const day = dayNumber(today) + offset;
+            const episode = buildEpisode(day, names, tone);
+            titleEl.textContent = episode.title;
+            metaEl.textContent = episode.meta + " | " + today.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+            textEl.innerHTML = episode.paragraphs.map((p) => "<p>" + p + "</p>").join("");
+            const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+            previousButton.disabled = offset === 0;
+            nextNote.textContent = offset
+                ? "Peek mode is " + offset + " day" + (offset === 1 ? "" : "s") + " ahead. Use Previous to step back toward today's real installment."
+                : "Next automatic installment: " + tomorrow.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) + ".";
+        }
 
-    [listenerInput, brotherInput, toneInput].forEach((control) => control.addEventListener("input", render));
-    render();
-  </script>
+        document.getElementById("saveNames").addEventListener("click", () => {
+            localStorage.setItem("storyNames", JSON.stringify({
+                you: cleanName(listenerInput.value, "Kofi"),
+                brother: cleanName(brotherInput.value, "Sena"),
+                tone: toneInput.value
+            }));
+            offset = 0;
+            render();
+        });
+
+        document.getElementById("futureEpisode").addEventListener("click", () => {
+            offset += 1;
+            render();
+        });
+
+        previousButton.addEventListener("click", () => {
+            offset = Math.max(0, offset - 1);
+            render();
+        });
+
+        document.getElementById("downloadEpisode").addEventListener("click", () => {
+            const text = titleEl.textContent + "\n" + metaEl.textContent + "\n\n" + Array.from(textEl.querySelectorAll("p")).map((p) => p.textContent).join("\n\n");
+            const blob = new Blob([text], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "todays-continuation.txt";
+            link.click();
+            URL.revokeObjectURL(url);
+        });
+
+        [listenerInput, brotherInput, toneInput].forEach((control) => control.addEventListener("input", render));
+        render();
+    </script>
 </body>
+
 </html>
