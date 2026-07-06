@@ -268,6 +268,21 @@
       font-weight: 700;
     }
 
+    .voice-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 18px;
+    }
+
+    .voice-status {
+      min-height: 1.4em;
+      color: var(--clay);
+      font-family: Arial, sans-serif;
+      font-size: .86rem;
+      font-weight: 700;
+    }
+
     .story-bridge {
       margin: 0 0 18px;
       border: 1px solid var(--line);
@@ -421,6 +436,12 @@
           </div>
           <div class="meta" id="episodeMeta"></div>
           <h3 id="episodeTitle"></h3>
+          <div class="voice-controls" data-read-target="scene">
+            <button class="btn light" data-voice-action="play">Read Scene</button>
+            <button class="btn light" data-voice-action="pause">Pause</button>
+            <button class="btn light" data-voice-action="stop">Stop</button>
+          </div>
+          <div class="voice-status" id="sceneVoiceStatus" aria-live="polite"></div>
           <div id="episodeText"></div>
           <div class="prompt-box" id="episodePrompt"></div>
           <div class="share-box">
@@ -469,6 +490,12 @@
     <section id="episode-one">
       <div class="wrap story-page">
         <h3>Episode One: The Return</h3>
+        <div class="voice-controls" data-read-target="episode">
+          <button class="btn light" data-voice-action="play">Read Episode</button>
+          <button class="btn light" data-voice-action="pause">Pause</button>
+          <button class="btn light" data-voice-action="stop">Stop</button>
+        </div>
+        <div class="voice-status" id="episodeVoiceStatus" aria-live="polite"></div>
         <p>Felix Adewale returned home with one suitcase, two unpaid invoices, and a phone full of messages he did not have the strength to answer.</p>
         <p>From the outside, he still looked like a man who had done things. People remembered the businesses, the ideas, the talks, the big plans, the rooms where he had spoken with confidence. They remembered the version of him who could make the future sound possible.</p>
         <p>They did not see the other version.</p>
@@ -642,6 +669,8 @@
     const promptEl = document.getElementById("episodePrompt");
     const noteEl = document.getElementById("dailyNote");
     const shareStatus = document.getElementById("shareStatus");
+    const sceneVoiceStatus = document.getElementById("sceneVoiceStatus");
+    const episodeVoiceStatus = document.getElementById("episodeVoiceStatus");
     const readerInput = document.getElementById("readerName");
     const modeInput = document.getElementById("mode");
     const previousButton = document.getElementById("previousEpisode");
@@ -656,6 +685,7 @@
     );
     let offset = 0;
     let currentShare = null;
+    let currentVoiceTarget = null;
 
     function cleanName(value) {
       return value.trim().replace(/[<>]/g, "") || "Felix";
@@ -745,6 +775,87 @@
       window.open(urls[platform] || currentShare.url, "_blank", "noopener,noreferrer");
     }
 
+    function setVoiceStatus(target, message) {
+      const status = target === "episode" ? episodeVoiceStatus : sceneVoiceStatus;
+      status.textContent = message;
+    }
+
+    function readTextFor(target) {
+      if (target === "episode") {
+        const episode = document.querySelector("#episode-one");
+        return Array.from(episode.querySelectorAll("h3, p, .quote"))
+          .map((node) => node.textContent.trim())
+          .filter(Boolean)
+          .join(". ");
+      }
+
+      return [
+        titleEl.textContent,
+        ...Array.from(textEl.querySelectorAll("p")).map((node) => node.textContent.trim()),
+        promptEl.textContent
+      ].filter(Boolean).join(". ");
+    }
+
+    function stopVoice(clearStatus = true) {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+      if (clearStatus) {
+        sceneVoiceStatus.textContent = "";
+        episodeVoiceStatus.textContent = "";
+      }
+      currentVoiceTarget = null;
+    }
+
+    function playVoice(target) {
+      if (!("speechSynthesis" in window)) {
+        setVoiceStatus(target, "Voice reading is not supported in this browser.");
+        return;
+      }
+
+      if (window.speechSynthesis.paused && currentVoiceTarget === target) {
+        window.speechSynthesis.resume();
+        setVoiceStatus(target, "Reading...");
+        return;
+      }
+
+      stopVoice(false);
+      const text = readTextFor(target);
+      if (!text) return;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.92;
+      utterance.pitch = 1;
+      currentVoiceTarget = target;
+      utterance.onstart = () => setVoiceStatus(target, "Reading...");
+      utterance.onend = () => {
+        setVoiceStatus(target, "Finished.");
+        currentVoiceTarget = null;
+      };
+      utterance.onerror = () => {
+        setVoiceStatus(target, "Voice reading stopped.");
+        currentVoiceTarget = null;
+      };
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function pauseVoice(target) {
+      if (!("speechSynthesis" in window)) return;
+      if (currentVoiceTarget === target && window.speechSynthesis.speaking) {
+        window.speechSynthesis.pause();
+        setVoiceStatus(target, "Paused.");
+      }
+    }
+
+    function handleVoice(target, action) {
+      if (action === "play") playVoice(target);
+      if (action === "pause") pauseVoice(target);
+      if (action === "stop") {
+        stopVoice(false);
+        setVoiceStatus(target, "Stopped.");
+      }
+    }
+
     function renderDaily() {
       const saved = JSON.parse(localStorage.getItem("dreamsReader") || "{}");
       if (saved.name && document.activeElement !== readerInput) readerInput.value = saved.name;
@@ -764,6 +875,10 @@
       metaEl.textContent = episode.season + " | Episode " + (scene.episodeIndex + 1) + " of " + seriesEpisodes.length + " | Scene " + sceneNumber + " of 6 | Day " + (day + 1) + " of " + seriesScenes.length + (cycle > 1 ? " | Cycle " + cycle : "") + " | " + today.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
       textEl.innerHTML = sceneParagraphs(scene, day, name, mode).map((line) => "<p>" + line + "</p>").join("");
       promptEl.textContent = "Reflection prompt: " + episode.prompt;
+      if (currentVoiceTarget === "scene") {
+        stopVoice(false);
+        setVoiceStatus("scene", "Scene changed. Press Read Scene to start again.");
+      }
       currentShare = {
         title: titleEl.textContent,
         prompt: episode.prompt,
@@ -823,6 +938,15 @@
     document.querySelectorAll("[data-share-platform]").forEach((button) => {
       button.addEventListener("click", () => openPlatformShare(button.dataset.sharePlatform));
     });
+
+    document.querySelectorAll("[data-read-target] [data-voice-action]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const wrapper = button.closest("[data-read-target]");
+        handleVoice(wrapper.dataset.readTarget, button.dataset.voiceAction);
+      });
+    });
+
+    window.addEventListener("beforeunload", () => stopVoice(false));
 
     [readerInput, modeInput].forEach((control) => control.addEventListener("input", renderDaily));
 
