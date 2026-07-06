@@ -1,956 +1,1018 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Dreams Are Valid</title>
-  <style>
-    :root {
-      --ink: #1f241f;
-      --paper: #f7f2e9;
-      --soft: #ece2d3;
-      --green: #1f4b3f;
-      --green-2: #497465;
-      --gold: #c5923f;
-      --clay: #9c553f;
-      --blue: #415d7a;
-      --line: rgba(31, 36, 31, .16);
-      --shadow: 0 24px 70px rgba(31, 36, 31, .22);
-      --radius: 8px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.55;
-    }
-
-    a { color: inherit; }
-    button, input, select, textarea { font: inherit; }
-
-    .hero {
-      min-height: 92vh;
-      position: relative;
-      display: grid;
-      align-items: end;
-      background:
-        linear-gradient(90deg, rgba(14, 24, 21, .9), rgba(14, 24, 21, .62) 48%, rgba(14, 24, 21, .12)),
-        linear-gradient(0deg, rgba(14, 24, 21, .72), rgba(14, 24, 21, 0) 40%),
-        url("dreams-room.png") center / cover no-repeat;
-      color: #fff9ed;
-      overflow: hidden;
-    }
-
-    .hero-inner, .wrap {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .hero-inner {
-      padding: 72px 0 9vh;
-    }
-
-    .kicker {
-      margin-bottom: 12px;
-      color: #f2c36e;
-      font-family: Arial, sans-serif;
-      font-size: .82rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    h1, h2, h3 {
-      margin: 0;
-      line-height: 1.06;
-      letter-spacing: 0;
-    }
-
-    h1 {
-      max-width: 780px;
-      font-size: clamp(3rem, 9vw, 7rem);
-      text-wrap: balance;
-    }
-
-    .hero-copy {
-      max-width: 680px;
-      margin: 22px 0 0;
-      color: #fff0d2;
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      border: 1px solid rgba(255, 249, 237, .44);
-      border-radius: var(--radius);
-      background: rgba(255, 249, 237, .1);
-      color: #fff9ed;
-      padding: 10px 14px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .btn.primary {
-      background: #efbd62;
-      border-color: #efbd62;
-      color: #19130a;
-    }
-
-    .btn.dark {
-      background: var(--green);
-      border-color: var(--green);
-      color: #fff9ed;
-    }
-
-    .btn.light {
-      background: transparent;
-      border-color: var(--line);
-      color: var(--ink);
-    }
-
-    .btn:disabled {
-      cursor: not-allowed;
-      opacity: .42;
-    }
-
-    main section {
-      padding: 62px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
-      gap: 34px;
-      margin-bottom: 28px;
-    }
-
-    .section-head h2 {
-      color: var(--green);
-      font-size: clamp(2rem, 5vw, 4.1rem);
-    }
-
-    .section-head p {
-      margin: 0;
-      color: #51483d;
-      font-size: 1.08rem;
-    }
-
-    .daily-band {
-      background: #173b32;
-      color: #fff9ed;
-    }
-
-    .daily-grid {
-      display: grid;
-      grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
-      gap: 28px;
-      align-items: start;
-    }
-
-    .panel {
-      border: 1px solid rgba(255, 249, 237, .16);
-      border-radius: var(--radius);
-      background: rgba(255, 249, 237, .07);
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .panel p {
-      margin-top: 8px;
-      color: #eadbc2;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-      margin: 14px 0;
-    }
-
-    label {
-      font-family: Arial, sans-serif;
-      color: rgba(255, 249, 237, .76);
-      font-size: .78rem;
-      font-weight: 700;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-
-    input, select {
-      width: 100%;
-      min-height: 42px;
-      border: 1px solid rgba(255, 249, 237, .24);
-      border-radius: var(--radius);
-      background: rgba(255, 249, 237, .1);
-      color: #fff9ed;
-      padding: 8px 10px;
-    }
-
-    select option { color: var(--ink); }
-
-    .episode-card {
-      border-radius: var(--radius);
-      background: #fffaf0;
-      color: var(--ink);
-      padding: clamp(20px, 4vw, 34px);
-      box-shadow: var(--shadow);
-    }
-
-    .meta {
-      margin-bottom: 14px;
-      color: #746657;
-      font-family: Arial, sans-serif;
-      font-size: .84rem;
-      font-weight: 700;
-      letter-spacing: .03em;
-      text-transform: uppercase;
-    }
-
-    .episode-card h3 {
-      color: var(--green);
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      margin-bottom: 14px;
-    }
-
-    .episode-card p, .story-page p {
-      margin: 0 0 1em;
-    }
-
-    .prompt-box {
-      margin-top: 18px;
-      border-left: 4px solid var(--gold);
-      background: #f4eadb;
-      padding: 14px;
-      font-weight: 700;
-    }
-
-    .share-box {
-      margin-top: 18px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #f8efe1;
-      padding: 14px;
-    }
-
-    .share-box h4 {
-      margin: 0 0 8px;
-      color: var(--green);
-      font-size: 1.05rem;
-    }
-
-    .share-box p {
-      margin: 0;
-      color: #5d5145;
-    }
-
-    .share-status {
-      min-height: 1.4em;
-      margin-top: 10px;
-      color: var(--clay);
-      font-family: Arial, sans-serif;
-      font-size: .86rem;
-      font-weight: 700;
-    }
-
-    .voice-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 12px 0 18px;
-    }
-
-    .voice-status {
-      min-height: 1.4em;
-      color: var(--clay);
-      font-family: Arial, sans-serif;
-      font-size: .86rem;
-      font-weight: 700;
-    }
-
-    .story-bridge {
-      margin: 0 0 18px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #f4eadb;
-      padding: 14px;
-      color: #4c4237;
-    }
-
-    .story-bridge strong {
-      color: var(--green);
-    }
-
-    .story-bridge .toolbar {
-      margin-top: 12px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .tile {
-      min-height: 178px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, .46);
-      padding: 18px;
-    }
-
-    .tile h3 {
-      color: var(--green);
-      font-size: 1.35rem;
-      margin-bottom: 8px;
-    }
-
-    .tile .tag {
-      color: var(--clay);
-      font-family: Arial, sans-serif;
-      font-size: .78rem;
-      font-weight: 700;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-
-    .season {
-      display: grid;
-      gap: 14px;
-    }
-
-    .episode-row {
-      display: grid;
-      grid-template-columns: 160px minmax(0, 1fr);
-      gap: 18px;
-      border-top: 1px solid var(--line);
-      padding-top: 15px;
-    }
-
-    .episode-row strong {
-      color: var(--clay);
-      font-family: Arial, sans-serif;
-      font-size: .88rem;
-      font-weight: 700;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-
-    .story-page {
-      max-width: 820px;
-      font-size: 1.1rem;
-    }
-
-    .story-page h3 {
-      color: var(--green);
-      font-size: clamp(2rem, 5vw, 3.6rem);
-      margin-bottom: 22px;
-    }
-
-    .quote {
-      border-left: 5px solid var(--gold);
-      margin: 26px 0;
-      padding: 12px 0 12px 18px;
-      color: var(--green);
-      font-size: clamp(1.3rem, 3vw, 2rem);
-      line-height: 1.2;
-    }
-
-    footer {
-      padding: 30px 0 46px;
-      background: #1f241f;
-      color: #eadfcf;
-    }
-
-    @media (max-width: 820px) {
-      .hero { min-height: 88vh; background-position: 58% center; }
-      .section-head, .daily-grid, .episode-row { grid-template-columns: 1fr; }
-      .grid-3 { grid-template-columns: 1fr; }
-      main section { padding: 44px 0; }
-    }
-  </style>
-</head>
-<body>
-  <header class="hero">
-    <div class="hero-inner">
-      <div class="kicker">Reflective drama series</div>
-      <h1>My Dreams Are Valid</h1>
-      <p class="hero-copy">After losing almost everything he built, Felix returns home and opens a small room where broken dreams are spoken, written, and slowly made whole again.</p>
-      <div class="toolbar">
-        <a class="btn primary" href="#episode-one">Start Story</a>
-        <a class="btn" href="#today">Today’s Scene</a>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section id="today" class="daily-band">
-      <div class="wrap daily-grid">
-        <aside class="panel">
-          <div class="kicker">Daily series reader</div>
-          <h2>Today’s Scene</h2>
-          <p>The whole series now unfolds in order: <strong>18 episodes</strong>, <strong>6 scenes each</strong>, <strong>108 daily scenes</strong> total.</p>
-
-          <div class="field">
-            <label for="readerName">Reader name</label>
-            <input id="readerName" value="Felix" maxlength="28">
-          </div>
-          <div class="field">
-            <label for="mode">Reading mood</label>
-            <select id="mode">
-              <option value="plain">Plain and heartfelt</option>
-              <option value="tense">More dramatic</option>
-              <option value="spiritual">More spiritual</option>
-            </select>
-          </div>
-          <div class="toolbar">
-            <button class="btn primary" id="saveReader">Save</button>
-            <button class="btn" id="previousEpisode">Previous</button>
-            <button class="btn" id="todayEpisode">Back to Today</button>
-            <button class="btn" id="nextEpisode">Peek Ahead</button>
-          </div>
-          <p id="dailyNote"></p>
-        </aside>
-
-        <article class="episode-card" aria-live="polite">
-          <div class="story-bridge">
-            <strong>Need the full episode?</strong> Read the main episode first, then come back for today’s next scene.
-            <div class="toolbar">
-              <a class="btn light" href="#episode-one">Go to Episode</a>
-            </div>
-          </div>
-          <div class="meta" id="episodeMeta"></div>
-          <h3 id="episodeTitle"></h3>
-          <div class="voice-controls" data-read-target="scene">
-            <button class="btn light" data-voice-action="play">Read Scene</button>
-            <button class="btn light" data-voice-action="pause">Pause</button>
-            <button class="btn light" data-voice-action="stop">Stop</button>
-          </div>
-          <div class="voice-status" id="sceneVoiceStatus" aria-live="polite"></div>
-          <div id="episodeText"></div>
-          <div class="prompt-box" id="episodePrompt"></div>
-          <div class="share-box">
-            <h4>Share today’s scene</h4>
-            <p>Use your device share sheet, or choose a platform-specific excerpt.</p>
-            <div class="toolbar">
-              <button class="btn dark" id="deviceShare">Share</button>
-              <button class="btn light" data-share-platform="facebook">Facebook</button>
-              <button class="btn light" data-share-platform="x">X</button>
-              <button class="btn light" data-share-platform="substack">Substack</button>
-              <button class="btn light" data-share-platform="linkedin">LinkedIn</button>
-              <button class="btn light" data-share-platform="bluesky">Bluesky</button>
-            </div>
-            <div class="share-status" id="shareStatus" aria-live="polite"></div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="series">
-      <div class="wrap">
-        <div class="section-head">
-          <h2>About The Story</h2>
-          <p>Felix comes home after a painful collapse and opens a small room where people can speak honestly about the dreams they lost, buried, or are afraid to begin again.</p>
-        </div>
-        <div class="grid-3">
-          <article class="tile">
-            <div class="tag">The Room</div>
-            <h3>A Place To Be Honest</h3>
-            <p>People come in with grief, shame, doubt, faith, unfinished dreams, and stories they have carried alone.</p>
-          </article>
-          <article class="tile">
-            <div class="tag">The Guide</div>
-            <h3>Felix Adewale</h3>
-            <p>Felix helps others tell the truth, but each conversation quietly asks him to face his own broken places too.</p>
-          </article>
-          <article class="tile">
-            <div class="tag">Daily Reading</div>
-            <h3>One Scene At A Time</h3>
-            <p>The story unfolds daily through 108 scenes. The structure stays behind the page; the reader only needs today’s next scene.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="episode-one">
-      <div class="wrap story-page">
-        <h3>Episode One: The Return</h3>
-        <div class="voice-controls" data-read-target="episode">
-          <button class="btn light" data-voice-action="play">Read Episode</button>
-          <button class="btn light" data-voice-action="pause">Pause</button>
-          <button class="btn light" data-voice-action="stop">Stop</button>
-        </div>
-        <div class="voice-status" id="episodeVoiceStatus" aria-live="polite"></div>
-        <p>Felix Adewale returned home with one suitcase, two unpaid invoices, and a phone full of messages he did not have the strength to answer.</p>
-        <p>From the outside, he still looked like a man who had done things. People remembered the businesses, the ideas, the talks, the big plans, the rooms where he had spoken with confidence. They remembered the version of him who could make the future sound possible.</p>
-        <p>They did not see the other version.</p>
-        <p>The version who sat in the back seat of the taxi and stared through the window like the town had become a mirror. Every street showed him something he had once promised himself. Every familiar corner asked the same quiet question.</p>
-        <p><em>So what happened to all your dreams?</em></p>
-        <p>Felix looked down at his hands. They were steady, but he did not feel steady. He had built things in technology, wellness, conservation, spirituality, service, and creativity. He had worked hard. He had believed deeply. He had trusted people. He had lost money. He had lost sleep. He had lost relationships. And somewhere along the way, he had started losing the part of himself that knew how to hope without fear.</p>
-        <p>The taxi stopped in front of an old community hall.</p>
-        <p>The building looked tired. One window was cracked. The paint was peeling. The front step had weeds growing through it. Years ago, children had danced there during holiday programs. Women had held meetings there. Men had argued politics there. People had celebrated birthdays, mourned losses, planned weddings, and borrowed chairs.</p>
-        <p>Now the place stood quiet, as if it had been waiting for someone to remember it.</p>
-        <p>Felix paid the driver and stepped out.</p>
-        <p>He did not know why he walked toward the door. Maybe because broken things recognize each other. Maybe because the hall looked exactly how he felt: still standing, but not sure why.</p>
-        <p>Inside, dust covered the floor. Old posters curled on the wall. A stack of chairs leaned in one corner like tired people. Felix stood in the middle of the room and listened to the silence.</p>
-        <p>For the first time in months, he did not try to sound wise. He did not pray a perfect prayer. He did not make a plan.</p>
-        <p>He only whispered, "I do not know if my dreams still matter."</p>
-        <p>The words filled the empty hall.</p>
-        <p>And because the room did not laugh at him, because it did not ask him to explain, because it simply held the truth, Felix began to cry.</p>
-        <p>When he was done, he found an old broom and started sweeping.</p>
-        <p>By evening, he had made a small circle with six chairs. On each chair, he placed a sheet of paper and a pencil. On the wall, he taped one handwritten sentence.</p>
-        <div class="quote">My Dreams Are Valid.</div>
-        <p>The next morning, one woman stood at the door. She was holding a handbag with both hands, like it was the only thing keeping her together.</p>
-        <p>"Is this the place," she asked, "where people can talk about dreams that died?"</p>
-        <p>Felix looked at the six empty chairs. Then he looked at the woman.</p>
-        <p>"Yes," he said. "But maybe we do not have to call them dead yet."</p>
-        <div class="toolbar">
-          <a class="btn dark" href="#today">Next Scene</a>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div class="wrap">A living draft for a reflective drama series. The room begins with one honest sentence. Copyright © 2026 Felix Abayomi. All rights reserved.</div>
-  </footer>
-
-  <script>
-    const startDate = new Date("2026-07-06T00:00:00");
-
-    const seriesEpisodes = [
-      {
-        season: "Season One", label: "Episode 1", title: "The Return",
-        summary: "Felix comes home after a business collapse, finds the abandoned hall, and opens the first version of the reflection room.",
-        visitor: "the woman from the doorway", wound: "grief that has frozen her life in place", change: "the room becomes real because one person trusts it with pain",
-        prompt: "What part of you survived something hard and never received thanks?",
-        scenes: ["The Old Hall", "Six Chairs", "The Sign on the Wall", "The Woman at the Door", "The Empty Chair", "Permission to Live"]
-      },
-      {
-        season: "Season One", label: "Episode 2", title: "Healing",
-        summary: "A widowed mother believes her life stopped when her husband died, and Felix helps her write to the woman who survived.",
-        visitor: "a widowed mother", wound: "a love so deep it has turned into guilt", change: "she begins to see survival as courage, not betrayal",
-        prompt: "What would you say to the version of you who made it through the worst day?",
-        scenes: ["The Letter She Refuses", "His Cup on the Table", "The First Sentence", "A Memory Without Apology", "The Group Listens", "Still Breathing"]
-      },
-      {
-        season: "Season One", label: "Episode 3", title: "Purpose",
-        summary: "A young man working a job he hates admits he buried his dream of becoming a filmmaker.",
-        visitor: "a young man with an old camera", wound: "a dream he calls childish because he is scared it still matters", change: "he records one honest minute and hears his own voice again",
-        prompt: "What dream have you been shrinking so other people will not question it?",
-        scenes: ["The Late Arrival", "Wedding Clips", "One Honest Minute", "The Camera Turns Around", "His Sister Watches", "The First Cut"]
-      },
-      {
-        season: "Season One", label: "Episode 4", title: "Reinvention",
-        summary: "A former business owner who lost everything refuses to start again until Felix admits his own failure.",
-        visitor: "a former business owner", wound: "shame that makes every new beginning feel like an insult", change: "Felix stops hiding behind wisdom and tells the truth",
-        prompt: "What would you rebuild if shame was not allowed to design the future?",
-        scenes: ["Standing by the Door", "The Ledger Book", "Felix Tells the Truth", "The Name of the New Shop", "Small Plans", "A Key He Kept"]
-      },
-      {
-        season: "Season One", label: "Episode 5", title: "Gratitude",
-        summary: "A cleaner, a teacher, and a struggling artist learn their quiet lives have touched more people than they realized.",
-        visitor: "three people who think their lives are too ordinary", wound: "invisible labor and unnoticed kindness", change: "the room names the impact they forgot to count",
-        prompt: "Who might be carrying a good memory of you that you never counted?",
-        scenes: ["Nothing to Share", "The Cleaner", "The Teacher", "The Artist", "Names on Paper", "Quiet Wins"]
-      },
-      {
-        season: "Season One", label: "Episode 6", title: "Faith",
-        summary: "Funding for the reflection space falls through, and Felix must decide whether to close it or continue without proof.",
-        visitor: "Felix himself", wound: "fear that another dream is dying in his hands", change: "he chooses obedience to purpose over certainty of provision",
-        prompt: "What good thing are you tempted to quit because support has not arrived yet?",
-        scenes: ["The Letter", "Rent Is Due", "Taking Down the Sign", "The Child at the Door", "A Prayer Without Proof", "Open Anyway"]
-      },
-      {
-        season: "Season One", label: "Episode 7", title: "Legacy",
-        summary: "An elderly man with terminal illness records his life story for his grandchildren.",
-        visitor: "an elderly man with a recorder", wound: "fear that his life will become only dates and documents", change: "ordinary memories become inheritance",
-        prompt: "What story from your life should not disappear when you are no longer in the room?",
-        scenes: ["The Recorder", "Begin With a Mistake", "The Woman He Loved", "A Lesson for Grandchildren", "Felix Hears Himself", "What Remains"]
-      },
-      {
-        season: "Season One", label: "Episode 8", title: "Resilience",
-        summary: "A storm damages the hall, and the group comes together to rebuild it.",
-        visitor: "the whole group", wound: "the fear that fragile things cannot survive pressure", change: "the room stops being Felix's project and becomes community",
-        prompt: "Where have you been carrying alone what was meant to become community?",
-        scenes: ["Rain Through the Roof", "Ruined Pages", "Buckets and Towels", "This Is Our Room", "Felix Breaks Down", "Rebuilt by Many Hands"]
-      },
-      {
-        season: "Season One", label: "Finale", title: "Still Valid",
-        summary: "The reflection space reopens for a community night where everyone shares one lesson from a dream that did not go as planned.",
-        visitor: "the community", wound: "the belief that failed dreams were wasted years", change: "Felix says what he has been learning all season: even what did not work still mattered",
-        prompt: "What failed dream still gave you something you can use?",
-        scenes: ["The Reopening", "No Perfect Speech", "Lessons from Broken Dreams", "The Woman Speaks", "Felix's Confession", "Still Valid"]
-      },
-      {
-        season: "Season Two", label: "Episode 1", title: "The Invitation",
-        summary: "A media company wants to partner with Felix, but they want the stories shaped for entertainment.",
-        visitor: "a media producer", wound: "visibility that asks for performance instead of truth", change: "Felix must decide what kind of attention the room can survive",
-        prompt: "Where are you tempted to make your truth more dramatic so people will notice?",
-        scenes: ["The Email", "The Producer Arrives", "Make It Bigger", "The Room Pushes Back", "A Private Offer", "Felix Does Not Answer Yet"]
-      },
-      {
-        season: "Season Two", label: "Episode 2", title: "The Cost of Becoming",
-        summary: "A close friend accuses Felix of using people's pain to build a platform.",
-        visitor: "an old friend", wound: "mistrust between purpose and ambition", change: "Felix has to examine the parts of him that still crave applause",
-        prompt: "What good thing in your life needs cleaner motives?",
-        scenes: ["The Accusation", "Old Friendship", "Receipts and Silence", "The Empty Room Afterward", "Felix Checks His Heart", "A Hard Apology"]
-      },
-      {
-        season: "Season Two", label: "Episode 3", title: "The Ones Who Left",
-        summary: "Felix reconnects with failed partners, old friends, and someone he disappointed during his ambitious years.",
-        visitor: "people from Felix's past", wound: "unfinished apologies and old damage", change: "he learns that growth includes repair, not only reinvention",
-        prompt: "Who deserves a softer, more honest version of your apology?",
-        scenes: ["The First Call", "A Former Partner", "The Friend Who Stopped Calling", "Someone He Disappointed", "No Defense", "Repair Begins Small"]
-      },
-      {
-        season: "Season Two", label: "Episode 4", title: "The Dream That Returned",
-        summary: "Felix revisits an old dream and begins writing a book from the stories and lessons of the room.",
-        visitor: "Felix's buried writer self", wound: "a dream postponed so long it feels embarrassing", change: "he lets an old dream return without demanding it prove itself first",
-        prompt: "What old dream keeps returning quietly?",
-        scenes: ["The Blank Document", "Stories on the Floor", "The First Page", "Fear of Sounding Small", "The Group Reads", "A Title Appears"]
-      },
-      {
-        season: "Season Two", label: "Episode 5", title: "The Breaking Point",
-        summary: "The movement grows too fast, and Felix burns out while helping others rest.",
-        visitor: "too many requests at once", wound: "service without boundaries", change: "Felix learns rest is not betrayal of purpose",
-        prompt: "Where are you helping others heal while refusing your own rest?",
-        scenes: ["Three Missed Calls", "Another Interview", "The Chair He Never Uses", "Body Says No", "Closed for One Day", "Rest as Obedience"]
-      },
-      {
-        season: "Season Two", label: "Episode 6", title: "Grace in Unexpected Places",
-        summary: "A former critic comes to the space after personal loss, and Felix must choose compassion over vindication.",
-        visitor: "a former critic", wound: "pride on both sides of misunderstanding", change: "Felix learns grace must stretch beyond people who were easy to love",
-        prompt: "Who would be hard for you to show compassion to if they came in hurting?",
-        scenes: ["The Critic at the Door", "Old Words Online", "Loss Changes His Voice", "Felix Wants to Win", "Grace Takes the Chair", "No Enemy Today"]
-      },
-      {
-        season: "Season Two", label: "Episode 7", title: "What We Leave Behind",
-        summary: "The group creates a digital archive of life stories from ordinary people in the community.",
-        visitor: "ordinary people with hidden histories", wound: "fear that simple lives will be forgotten", change: "the community becomes the hero of its own record",
-        prompt: "What part of your ordinary life deserves to be recorded with honor?",
-        scenes: ["The Archive Idea", "First Voice Note", "Photos in a Shoebox", "The Cleaner Returns", "Children Listen", "A Community Remembers"]
-      },
-      {
-        season: "Season Two", label: "Episode 8", title: "The Story Is Still Unfolding",
-        summary: "Felix is invited to speak on a large stage and chooses truth over a perfect success speech.",
-        visitor: "a large audience", wound: "pressure to turn healing into a polished success story", change: "Felix tells the truth in public and finds freedom in imperfection",
-        prompt: "What truth would you tell if you stopped trying to sound successful?",
-        scenes: ["Backstage", "The Prepared Speech", "A Face in the Crowd", "He Closes the Notes", "The Honest Talk", "Standing Ovation, Quiet Heart"]
-      },
-      {
-        season: "Season Two", label: "Series Finale", title: "My Dreams Are Valid",
-        summary: "Felix returns to the first room and sees stories, workshops, healing circles, and new beginnings.",
-        visitor: "a new person at the door", wound: "the fear that beginning again is too late", change: "Felix understands the dream was never only success; it was service",
-        prompt: "What would you like to begin with: a reflection, a writing prompt, or a conversation?",
-        scenes: ["The First Room Again", "Workshops and Circles", "The Book on the Table", "What Success Became", "A New Person Enters", "Begin Here"]
-      }
-    ];
-
-    const titleEl = document.getElementById("episodeTitle");
-    const metaEl = document.getElementById("episodeMeta");
-    const textEl = document.getElementById("episodeText");
-    const promptEl = document.getElementById("episodePrompt");
-    const noteEl = document.getElementById("dailyNote");
-    const shareStatus = document.getElementById("shareStatus");
-    const sceneVoiceStatus = document.getElementById("sceneVoiceStatus");
-    const episodeVoiceStatus = document.getElementById("episodeVoiceStatus");
-    const readerInput = document.getElementById("readerName");
-    const modeInput = document.getElementById("mode");
-    const previousButton = document.getElementById("previousEpisode");
-    const todayButton = document.getElementById("todayEpisode");
-    const seriesScenes = seriesEpisodes.flatMap((episode, episodeIndex) =>
-      episode.scenes.map((sceneTitle, sceneIndex) => ({
-        episode,
-        episodeIndex,
-        sceneTitle,
-        sceneIndex
-      }))
-    );
-    let offset = 0;
-    let currentShare = null;
-    let currentVoiceTarget = null;
-
-    function cleanName(value) {
-      return value.trim().replace(/[<>]/g, "") || "Felix";
-    }
-
-    function dayNumber(date) {
-      const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      return Math.max(0, Math.floor((today - startDate) / 86400000));
-    }
-
-    function modeLine(mode, name) {
-      if (mode === "tense") return "The room feels quiet, but not safe. " + name + " can tell this conversation will change what happens next.";
-      if (mode === "spiritual") return name + " lets the silence breathe before anyone tries to turn pain into an answer.";
-      return name + " does not rush to fix anyone. He helps the truth come out one sentence at a time.";
-    }
-
-    function sceneParagraphs(scene, day, name, mode) {
-      const episode = scene.episode;
-      const sceneNumber = scene.sceneIndex + 1;
-      const openings = [
-        "The room is quiet, but not empty. Felix can feel someone holding back tears before they say a word.",
-        "Felix has learned not to speak first. He waits, and the silence gives " + episode.visitor + " room to breathe.",
-        "The chairs are in a circle again. This time, the problem is " + episode.wound + ".",
-        "Felix notices the small thing first: the hand on the bag, the eyes on the floor, the way hope tries not to look foolish.",
-        "The room hears the truth plainly. No performance. No big speech. Just " + episode.wound + ".",
-        "Near the end of the episode, the scene turns on one honest choice."
-      ];
-      const turns = [
-        episode.summary,
-        "Felix gives the person a simple task. Not a cure. Not advice. Just one honest action they can take before fear talks them out of it.",
-        modeLine(mode, name),
-        "The person resists at first. Then one sentence lands in the room, and everyone knows the story has moved.",
-        "By the end of this scene, the change is small but real: " + episode.change + ".",
-        "The scene closes with a question nobody can answer quickly."
-      ];
-      return [
-        openings[scene.sceneIndex],
-        turns[scene.sceneIndex],
-        "Felix writes one line on the board: \"" + episode.prompt + "\"",
-        sceneNumber < 6
-          ? "The page stops there. Tomorrow continues the same episode with Scene " + (sceneNumber + 1) + "."
-          : "This episode closes here. Tomorrow begins the next episode in the series."
-      ];
-    }
-
-    function shareUrl() {
-      return "https://stories.felixplatforms.com/#today";
-    }
-
-    function shareExcerpt(platform, details) {
-      const title = details.title;
-      const prompt = details.prompt;
-      const url = details.url;
-      const options = {
-        facebook: title + "\n\nA quiet reflective drama about broken dreams, healing, and beginning again.\n\n" + url,
-        x: title + "\n\nA daily scene from My Dreams Are Valid: broken dreams, honest rooms, and the courage to begin again.\n\n" + url,
-        substack: title + "\n\nToday’s reflection from My Dreams Are Valid:\n\n" + prompt + "\n\n" + url,
-        linkedin: title + "\n\nA reflective drama scene about resilience, purpose, and rebuilding after loss. Today’s prompt: " + prompt + "\n\n" + url,
-        bluesky: title + "\n\nToday’s scene asks: " + prompt + "\n\n" + url
-      };
-      return options[platform] || title + "\n\n" + url;
-    }
-
-    async function copyShareText(text) {
-      try {
-        await navigator.clipboard.writeText(text);
-        shareStatus.textContent = "Excerpt copied. Paste it into the post box if it does not appear automatically.";
-      } catch (error) {
-        shareStatus.textContent = "Share opened. If text is missing, copy it from today’s scene.";
-      }
-    }
-
-    function openPlatformShare(platform) {
-      if (!currentShare) return;
-      const text = shareExcerpt(platform, currentShare);
-      const encodedText = encodeURIComponent(text);
-      const encodedUrl = encodeURIComponent(currentShare.url);
-      const encodedTitle = encodeURIComponent(currentShare.title);
-      const urls = {
-        facebook: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
-        x: "https://twitter.com/intent/tweet?text=" + encodedText,
-        substack: "https://substack.com/home?utm_source=share",
-        linkedin: "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl,
-        bluesky: "https://bsky.app/intent/compose?text=" + encodedText
-      };
-      copyShareText(text);
-      window.open(urls[platform] || currentShare.url, "_blank", "noopener,noreferrer");
-    }
-
-    function setVoiceStatus(target, message) {
-      const status = target === "episode" ? episodeVoiceStatus : sceneVoiceStatus;
-      status.textContent = message;
-    }
-
-    function readTextFor(target) {
-      if (target === "episode") {
-        const episode = document.querySelector("#episode-one");
-        return Array.from(episode.querySelectorAll("h3, p, .quote"))
-          .map((node) => node.textContent.trim())
-          .filter(Boolean)
-          .join(". ");
-      }
-
-      return [
-        titleEl.textContent,
-        ...Array.from(textEl.querySelectorAll("p")).map((node) => node.textContent.trim()),
-        promptEl.textContent
-      ].filter(Boolean).join(". ");
-    }
-
-    function stopVoice(clearStatus = true) {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-      if (clearStatus) {
-        sceneVoiceStatus.textContent = "";
-        episodeVoiceStatus.textContent = "";
-      }
-      currentVoiceTarget = null;
-    }
-
-    function playVoice(target) {
-      if (!("speechSynthesis" in window)) {
-        setVoiceStatus(target, "Voice reading is not supported in this browser.");
-        return;
-      }
-
-      if (window.speechSynthesis.paused && currentVoiceTarget === target) {
-        window.speechSynthesis.resume();
-        setVoiceStatus(target, "Reading...");
-        return;
-      }
-
-      stopVoice(false);
-      const text = readTextFor(target);
-      if (!text) return;
-
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.92;
-      utterance.pitch = 1;
-      currentVoiceTarget = target;
-      utterance.onstart = () => setVoiceStatus(target, "Reading...");
-      utterance.onend = () => {
-        setVoiceStatus(target, "Finished.");
-        currentVoiceTarget = null;
-      };
-      utterance.onerror = () => {
-        setVoiceStatus(target, "Voice reading stopped.");
-        currentVoiceTarget = null;
-      };
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function pauseVoice(target) {
-      if (!("speechSynthesis" in window)) return;
-      if (currentVoiceTarget === target && window.speechSynthesis.speaking) {
-        window.speechSynthesis.pause();
-        setVoiceStatus(target, "Paused.");
-      }
-    }
-
-    function handleVoice(target, action) {
-      if (action === "play") playVoice(target);
-      if (action === "pause") pauseVoice(target);
-      if (action === "stop") {
-        stopVoice(false);
-        setVoiceStatus(target, "Stopped.");
-      }
-    }
-
-    function renderDaily() {
-      const saved = JSON.parse(localStorage.getItem("dreamsReader") || "{}");
-      if (saved.name && document.activeElement !== readerInput) readerInput.value = saved.name;
-      if (saved.mode && document.activeElement !== modeInput) modeInput.value = saved.mode;
-
-      const name = cleanName(readerInput.value);
-      const mode = modeInput.value || "plain";
-      const today = new Date();
-      const day = dayNumber(today) + offset;
-      const scene = seriesScenes[day % seriesScenes.length];
-      const cycle = Math.floor(day / seriesScenes.length) + 1;
-      const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-      const episode = scene.episode;
-      const sceneNumber = scene.sceneIndex + 1;
-
-      titleEl.textContent = episode.label + ": " + episode.title + " | Scene " + sceneNumber + ": " + scene.sceneTitle;
-      metaEl.textContent = episode.season + " | Episode " + (scene.episodeIndex + 1) + " of " + seriesEpisodes.length + " | Scene " + sceneNumber + " of 6 | Day " + (day + 1) + " of " + seriesScenes.length + (cycle > 1 ? " | Cycle " + cycle : "") + " | " + today.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-      textEl.innerHTML = sceneParagraphs(scene, day, name, mode).map((line) => "<p>" + line + "</p>").join("");
-      promptEl.textContent = "Reflection prompt: " + episode.prompt;
-      if (currentVoiceTarget === "scene") {
-        stopVoice(false);
-        setVoiceStatus("scene", "Scene changed. Press Read Scene to start again.");
-      }
-      currentShare = {
-        title: titleEl.textContent,
-        prompt: episode.prompt,
-        url: shareUrl()
-      };
-      shareStatus.textContent = "";
-      previousButton.disabled = offset === 0;
-      todayButton.disabled = offset === 0;
-      noteEl.textContent = offset
-        ? "Preview mode: you are " + offset + " scene" + (offset === 1 ? "" : "s") + " ahead. Click Back to Today to return to today's real scene."
-        : "The next scene opens automatically on " + tomorrow.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) + ".";
-    }
-
-    document.getElementById("saveReader").addEventListener("click", () => {
-      localStorage.setItem("dreamsReader", JSON.stringify({
-        name: cleanName(readerInput.value),
-        mode: modeInput.value
-      }));
-      offset = 0;
-      renderDaily();
-    });
-
-    document.getElementById("nextEpisode").addEventListener("click", () => {
-      offset += 1;
-      renderDaily();
-    });
-
-    previousButton.addEventListener("click", () => {
-      offset = Math.max(0, offset - 1);
-      renderDaily();
-    });
-
-    todayButton.addEventListener("click", () => {
-      offset = 0;
-      renderDaily();
-    });
-
-    document.getElementById("deviceShare").addEventListener("click", async () => {
-      if (!currentShare) return;
-      const text = shareExcerpt("substack", currentShare);
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: currentShare.title,
-            text,
-            url: currentShare.url
-          });
-          shareStatus.textContent = "Shared.";
-        } catch (error) {
-          shareStatus.textContent = "Share cancelled.";
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Dreams Are Valid</title>
+    <style>
+        :root {
+            --ink: #1f241f;
+            --paper: #f7f2e9;
+            --soft: #ece2d3;
+            --green: #1f4b3f;
+            --green-2: #497465;
+            --gold: #c5923f;
+            --clay: #9c553f;
+            --blue: #415d7a;
+            --line: rgba(31, 36, 31, .16);
+            --shadow: 0 24px 70px rgba(31, 36, 31, .22);
+            --radius: 8px;
         }
-      } else {
-        await copyShareText(text);
-      }
-    });
 
-    document.querySelectorAll("[data-share-platform]").forEach((button) => {
-      button.addEventListener("click", () => openPlatformShare(button.dataset.sharePlatform));
-    });
+        * {
+            box-sizing: border-box;
+        }
 
-    document.querySelectorAll("[data-read-target] [data-voice-action]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const wrapper = button.closest("[data-read-target]");
-        handleVoice(wrapper.dataset.readTarget, button.dataset.voiceAction);
-      });
-    });
+        html {
+            scroll-behavior: smooth;
+        }
 
-    window.addEventListener("beforeunload", () => stopVoice(false));
+        body {
+            margin: 0;
+            color: var(--ink);
+            background: var(--paper);
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1.55;
+        }
 
-    [readerInput, modeInput].forEach((control) => control.addEventListener("input", renderDaily));
+        a {
+            color: inherit;
+        }
 
-    renderDaily();
-  </script>
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        .hero {
+            min-height: 92vh;
+            position: relative;
+            display: grid;
+            align-items: end;
+            background:
+                linear-gradient(90deg, rgba(14, 24, 21, .9), rgba(14, 24, 21, .62) 48%, rgba(14, 24, 21, .12)),
+                linear-gradient(0deg, rgba(14, 24, 21, .72), rgba(14, 24, 21, 0) 40%),
+                url("dreams-room.png") center / cover no-repeat;
+            color: #fff9ed;
+            overflow: hidden;
+        }
+
+        .hero-inner,
+        .wrap {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .hero-inner {
+            padding: 72px 0 9vh;
+        }
+
+        .kicker {
+            margin-bottom: 12px;
+            color: #f2c36e;
+            font-family: Arial, sans-serif;
+            font-size: .82rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            line-height: 1.06;
+            letter-spacing: 0;
+        }
+
+        h1 {
+            max-width: 780px;
+            font-size: clamp(3rem, 9vw, 7rem);
+            text-wrap: balance;
+        }
+
+        .hero-copy {
+            max-width: 680px;
+            margin: 22px 0 0;
+            color: #fff0d2;
+            font-size: clamp(1.05rem, 2vw, 1.35rem);
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            border: 1px solid rgba(255, 249, 237, .44);
+            border-radius: var(--radius);
+            background: rgba(255, 249, 237, .1);
+            color: #fff9ed;
+            padding: 10px 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: #efbd62;
+            border-color: #efbd62;
+            color: #19130a;
+        }
+
+        .btn.dark {
+            background: var(--green);
+            border-color: var(--green);
+            color: #fff9ed;
+        }
+
+        .btn.light {
+            background: transparent;
+            border-color: var(--line);
+            color: var(--ink);
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: .42;
+        }
+
+        main section {
+            padding: 62px 0;
+            border-top: 1px solid var(--line);
+        }
+
+        .section-head {
+            display: grid;
+            grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+            gap: 34px;
+            margin-bottom: 28px;
+        }
+
+        .section-head h2 {
+            color: var(--green);
+            font-size: clamp(2rem, 5vw, 4.1rem);
+        }
+
+        .section-head p {
+            margin: 0;
+            color: #51483d;
+            font-size: 1.08rem;
+        }
+
+        .daily-band {
+            background: #173b32;
+            color: #fff9ed;
+        }
+
+        .daily-grid {
+            display: grid;
+            grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+        .panel {
+            border: 1px solid rgba(255, 249, 237, .16);
+            border-radius: var(--radius);
+            background: rgba(255, 249, 237, .07);
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel p {
+            margin-top: 8px;
+            color: #eadbc2;
+        }
+
+        .field {
+            display: grid;
+            gap: 6px;
+            margin: 14px 0;
+        }
+
+        label {
+            font-family: Arial, sans-serif;
+            color: rgba(255, 249, 237, .76);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 42px;
+            border: 1px solid rgba(255, 249, 237, .24);
+            border-radius: var(--radius);
+            background: rgba(255, 249, 237, .1);
+            color: #fff9ed;
+            padding: 8px 10px;
+        }
+
+        select option {
+            color: var(--ink);
+        }
+
+        .episode-card {
+            border-radius: var(--radius);
+            background: #fffaf0;
+            color: var(--ink);
+            padding: clamp(20px, 4vw, 34px);
+            box-shadow: var(--shadow);
+        }
+
+        .meta {
+            margin-bottom: 14px;
+            color: #746657;
+            font-family: Arial, sans-serif;
+            font-size: .84rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+            text-transform: uppercase;
+        }
+
+        .episode-card h3 {
+            color: var(--green);
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            margin-bottom: 14px;
+        }
+
+        .episode-card p,
+        .story-page p {
+            margin: 0 0 1em;
+        }
+
+        .prompt-box {
+            margin-top: 18px;
+            border-left: 4px solid var(--gold);
+            background: #f4eadb;
+            padding: 14px;
+            font-weight: 700;
+        }
+
+        .share-box {
+            margin-top: 18px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #f8efe1;
+            padding: 14px;
+        }
+
+        .share-box h4 {
+            margin: 0 0 8px;
+            color: var(--green);
+            font-size: 1.05rem;
+        }
+
+        .share-box p {
+            margin: 0;
+            color: #5d5145;
+        }
+
+        .share-status {
+            min-height: 1.4em;
+            margin-top: 10px;
+            color: var(--clay);
+            font-family: Arial, sans-serif;
+            font-size: .86rem;
+            font-weight: 700;
+        }
+
+        .voice-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 18px;
+        }
+
+        .voice-status {
+            min-height: 1.4em;
+            color: var(--clay);
+            font-family: Arial, sans-serif;
+            font-size: .86rem;
+            font-weight: 700;
+        }
+
+        .story-bridge {
+            margin: 0 0 18px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #f4eadb;
+            padding: 14px;
+            color: #4c4237;
+        }
+
+        .story-bridge strong {
+            color: var(--green);
+        }
+
+        .story-bridge .toolbar {
+            margin-top: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .tile {
+            min-height: 178px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, .46);
+            padding: 18px;
+        }
+
+        .tile h3 {
+            color: var(--green);
+            font-size: 1.35rem;
+            margin-bottom: 8px;
+        }
+
+        .tile .tag {
+            color: var(--clay);
+            font-family: Arial, sans-serif;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+
+        .season {
+            display: grid;
+            gap: 14px;
+        }
+
+        .episode-row {
+            display: grid;
+            grid-template-columns: 160px minmax(0, 1fr);
+            gap: 18px;
+            border-top: 1px solid var(--line);
+            padding-top: 15px;
+        }
+
+        .episode-row strong {
+            color: var(--clay);
+            font-family: Arial, sans-serif;
+            font-size: .88rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .story-page {
+            max-width: 820px;
+            font-size: 1.1rem;
+        }
+
+        .story-page h3 {
+            color: var(--green);
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            margin-bottom: 22px;
+        }
+
+        .quote {
+            border-left: 5px solid var(--gold);
+            margin: 26px 0;
+            padding: 12px 0 12px 18px;
+            color: var(--green);
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            line-height: 1.2;
+        }
+
+        footer {
+            padding: 30px 0 46px;
+            background: #1f241f;
+            color: #eadfcf;
+        }
+
+        @media (max-width: 820px) {
+            .hero {
+                min-height: 88vh;
+                background-position: 58% center;
+            }
+
+            .section-head,
+            .daily-grid,
+            .episode-row {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            main section {
+                padding: 44px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <div class="hero-inner">
+            <div class="kicker">Reflective drama series</div>
+            <h1>My Dreams Are Valid</h1>
+            <p class="hero-copy">After losing almost everything he built, Felix returns home and opens a small room
+                where broken dreams are spoken, written, and slowly made whole again.</p>
+            <div class="toolbar">
+                <a class="btn primary" href="#episode-one">Start Story</a>
+                <a class="btn" href="#today">Today’s Scene</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="today" class="daily-band">
+            <div class="wrap daily-grid">
+                <aside class="panel">
+                    <div class="kicker">Daily series reader</div>
+                    <h2>Today’s Scene</h2>
+                    <p>The whole series now unfolds in order: <strong>18 episodes</strong>, <strong>6 scenes
+                            each</strong>, <strong>108 daily scenes</strong> total.</p>
+
+                    <div class="field">
+                        <label for="readerName">Reader name</label>
+                        <input id="readerName" value="Felix" maxlength="28">
+                    </div>
+                    <div class="field">
+                        <label for="mode">Reading mood</label>
+                        <select id="mode">
+                            <option value="plain">Plain and heartfelt</option>
+                            <option value="tense">More dramatic</option>
+                            <option value="spiritual">More spiritual</option>
+                        </select>
+                    </div>
+                    <div class="toolbar">
+                        <button class="btn primary" id="saveReader">Save</button>
+                        <button class="btn" id="previousEpisode">Previous</button>
+                        <button class="btn" id="todayEpisode">Back to Today</button>
+                        <button class="btn" id="nextEpisode">Peek Ahead</button>
+                    </div>
+                    <p id="dailyNote"></p>
+                </aside>
+
+                <article class="episode-card" aria-live="polite">
+                    <div class="story-bridge">
+                        <strong>Need the full episode?</strong> Read the main episode first, then come back for today’s
+                        next scene.
+                        <div class="toolbar">
+                            <a class="btn light" href="#episode-one">Go to Episode</a>
+                        </div>
+                    </div>
+                    <div class="meta" id="episodeMeta"></div>
+                    <h3 id="episodeTitle"></h3>
+                    <div class="voice-controls" data-read-target="scene">
+                        <button class="btn light" data-voice-action="play">Read Scene</button>
+                        <button class="btn light" data-voice-action="pause">Pause</button>
+                        <button class="btn light" data-voice-action="stop">Stop</button>
+                    </div>
+                    <div class="voice-status" id="sceneVoiceStatus" aria-live="polite"></div>
+                    <div id="episodeText"></div>
+                    <div class="prompt-box" id="episodePrompt"></div>
+                    <div class="share-box">
+                        <h4>Share today’s scene</h4>
+                        <p>Use your device share sheet, or choose a platform-specific excerpt.</p>
+                        <div class="toolbar">
+                            <button class="btn dark" id="deviceShare">Share</button>
+                            <button class="btn light" data-share-platform="facebook">Facebook</button>
+                            <button class="btn light" data-share-platform="x">X</button>
+                            <button class="btn light" data-share-platform="substack">Substack</button>
+                            <button class="btn light" data-share-platform="linkedin">LinkedIn</button>
+                            <button class="btn light" data-share-platform="bluesky">Bluesky</button>
+                        </div>
+                        <div class="share-status" id="shareStatus" aria-live="polite"></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="series">
+            <div class="wrap">
+                <div class="section-head">
+                    <h2>About The Story</h2>
+                    <p>Felix comes home after a painful collapse and opens a small room where people can speak honestly
+                        about the dreams they lost, buried, or are afraid to begin again.</p>
+                </div>
+                <div class="grid-3">
+                    <article class="tile">
+                        <div class="tag">The Room</div>
+                        <h3>A Place To Be Honest</h3>
+                        <p>People come in with grief, shame, doubt, faith, unfinished dreams, and stories they have
+                            carried alone.</p>
+                    </article>
+                    <article class="tile">
+                        <div class="tag">The Guide</div>
+                        <h3>Felix Adewale</h3>
+                        <p>Felix helps others tell the truth, but each conversation quietly asks him to face his own
+                            broken places too.</p>
+                    </article>
+                    <article class="tile">
+                        <div class="tag">Daily Reading</div>
+                        <h3>One Scene At A Time</h3>
+                        <p>The story unfolds daily through 108 scenes. The structure stays behind the page; the reader
+                            only needs today’s next scene.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="episode-one">
+            <div class="wrap story-page">
+                <h3>Episode One: The Return</h3>
+                <div class="voice-controls" data-read-target="episode">
+                    <button class="btn light" data-voice-action="play">Read Episode</button>
+                    <button class="btn light" data-voice-action="pause">Pause</button>
+                    <button class="btn light" data-voice-action="stop">Stop</button>
+                </div>
+                <div class="voice-status" id="episodeVoiceStatus" aria-live="polite"></div>
+                <p>Felix Adewale returned home with one suitcase, two unpaid invoices, and a phone full of messages he
+                    did not have the strength to answer.</p>
+                <p>From the outside, he still looked like a man who had done things. People remembered the businesses,
+                    the ideas, the talks, the big plans, the rooms where he had spoken with confidence. They remembered
+                    the version of him who could make the future sound possible.</p>
+                <p>They did not see the other version.</p>
+                <p>The version who sat in the back seat of the taxi and stared through the window like the town had
+                    become a mirror. Every street showed him something he had once promised himself. Every familiar
+                    corner asked the same quiet question.</p>
+                <p><em>So what happened to all your dreams?</em></p>
+                <p>Felix looked down at his hands. They were steady, but he did not feel steady. He had built things in
+                    technology, wellness, conservation, spirituality, service, and creativity. He had worked hard. He
+                    had believed deeply. He had trusted people. He had lost money. He had lost sleep. He had lost
+                    relationships. And somewhere along the way, he had started losing the part of himself that knew how
+                    to hope without fear.</p>
+                <p>The taxi stopped in front of an old community hall.</p>
+                <p>The building looked tired. One window was cracked. The paint was peeling. The front step had weeds
+                    growing through it. Years ago, children had danced there during holiday programs. Women had held
+                    meetings there. Men had argued politics there. People had celebrated birthdays, mourned losses,
+                    planned weddings, and borrowed chairs.</p>
+                <p>Now the place stood quiet, as if it had been waiting for someone to remember it.</p>
+                <p>Felix paid the driver and stepped out.</p>
+                <p>He did not know why he walked toward the door. Maybe because broken things recognize each other.
+                    Maybe because the hall looked exactly how he felt: still standing, but not sure why.</p>
+                <p>Inside, dust covered the floor. Old posters curled on the wall. A stack of chairs leaned in one
+                    corner like tired people. Felix stood in the middle of the room and listened to the silence.</p>
+                <p>For the first time in months, he did not try to sound wise. He did not pray a perfect prayer. He did
+                    not make a plan.</p>
+                <p>He only whispered, "I do not know if my dreams still matter."</p>
+                <p>The words filled the empty hall.</p>
+                <p>And because the room did not laugh at him, because it did not ask him to explain, because it simply
+                    held the truth, Felix began to cry.</p>
+                <p>When he was done, he found an old broom and started sweeping.</p>
+                <p>By evening, he had made a small circle with six chairs. On each chair, he placed a sheet of paper and
+                    a pencil. On the wall, he taped one handwritten sentence.</p>
+                <div class="quote">My Dreams Are Valid.</div>
+                <p>The next morning, one woman stood at the door. She was holding a handbag with both hands, like it was
+                    the only thing keeping her together.</p>
+                <p>"Is this the place," she asked, "where people can talk about dreams that died?"</p>
+                <p>Felix looked at the six empty chairs. Then he looked at the woman.</p>
+                <p>"Yes," he said. "But maybe we do not have to call them dead yet."</p>
+                <div class="toolbar">
+                    <a class="btn dark" href="#today">Next Scene</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="wrap">A living draft for a reflective drama series. The room begins with one honest sentence.
+              Copyright (c) 2026 Felix Abayomi. All rights reserved.</div>
+    </footer>
+
+    <script>
+        const startDate = new Date("2026-07-06T00:00:00");
+
+        const seriesEpisodes = [
+            {
+                season: "Season One", label: "Episode 1", title: "The Return",
+                summary: "Felix comes home after a business collapse, finds the abandoned hall, and opens the first version of the reflection room.",
+                visitor: "the woman from the doorway", wound: "grief that has frozen her life in place", change: "the room becomes real because one person trusts it with pain",
+                prompt: "What part of you survived something hard and never received thanks?",
+                scenes: ["The Old Hall", "Six Chairs", "The Sign on the Wall", "The Woman at the Door", "The Empty Chair", "Permission to Live"]
+            },
+            {
+                season: "Season One", label: "Episode 2", title: "Healing",
+                summary: "A widowed mother believes her life stopped when her husband died, and Felix helps her write to the woman who survived.",
+                visitor: "a widowed mother", wound: "a love so deep it has turned into guilt", change: "she begins to see survival as courage, not betrayal",
+                prompt: "What would you say to the version of you who made it through the worst day?",
+                scenes: ["The Letter She Refuses", "His Cup on the Table", "The First Sentence", "A Memory Without Apology", "The Group Listens", "Still Breathing"]
+            },
+            {
+                season: "Season One", label: "Episode 3", title: "Purpose",
+                summary: "A young man working a job he hates admits he buried his dream of becoming a filmmaker.",
+                visitor: "a young man with an old camera", wound: "a dream he calls childish because he is scared it still matters", change: "he records one honest minute and hears his own voice again",
+                prompt: "What dream have you been shrinking so other people will not question it?",
+                scenes: ["The Late Arrival", "Wedding Clips", "One Honest Minute", "The Camera Turns Around", "His Sister Watches", "The First Cut"]
+            },
+            {
+                season: "Season One", label: "Episode 4", title: "Reinvention",
+                summary: "A former business owner who lost everything refuses to start again until Felix admits his own failure.",
+                visitor: "a former business owner", wound: "shame that makes every new beginning feel like an insult", change: "Felix stops hiding behind wisdom and tells the truth",
+                prompt: "What would you rebuild if shame was not allowed to design the future?",
+                scenes: ["Standing by the Door", "The Ledger Book", "Felix Tells the Truth", "The Name of the New Shop", "Small Plans", "A Key He Kept"]
+            },
+            {
+                season: "Season One", label: "Episode 5", title: "Gratitude",
+                summary: "A cleaner, a teacher, and a struggling artist learn their quiet lives have touched more people than they realized.",
+                visitor: "three people who think their lives are too ordinary", wound: "invisible labor and unnoticed kindness", change: "the room names the impact they forgot to count",
+                prompt: "Who might be carrying a good memory of you that you never counted?",
+                scenes: ["Nothing to Share", "The Cleaner", "The Teacher", "The Artist", "Names on Paper", "Quiet Wins"]
+            },
+            {
+                season: "Season One", label: "Episode 6", title: "Faith",
+                summary: "Funding for the reflection space falls through, and Felix must decide whether to close it or continue without proof.",
+                visitor: "Felix himself", wound: "fear that another dream is dying in his hands", change: "he chooses obedience to purpose over certainty of provision",
+                prompt: "What good thing are you tempted to quit because support has not arrived yet?",
+                scenes: ["The Letter", "Rent Is Due", "Taking Down the Sign", "The Child at the Door", "A Prayer Without Proof", "Open Anyway"]
+            },
+            {
+                season: "Season One", label: "Episode 7", title: "Legacy",
+                summary: "An elderly man with terminal illness records his life story for his grandchildren.",
+                visitor: "an elderly man with a recorder", wound: "fear that his life will become only dates and documents", change: "ordinary memories become inheritance",
+                prompt: "What story from your life should not disappear when you are no longer in the room?",
+                scenes: ["The Recorder", "Begin With a Mistake", "The Woman He Loved", "A Lesson for Grandchildren", "Felix Hears Himself", "What Remains"]
+            },
+            {
+                season: "Season One", label: "Episode 8", title: "Resilience",
+                summary: "A storm damages the hall, and the group comes together to rebuild it.",
+                visitor: "the whole group", wound: "the fear that fragile things cannot survive pressure", change: "the room stops being Felix's project and becomes community",
+                prompt: "Where have you been carrying alone what was meant to become community?",
+                scenes: ["Rain Through the Roof", "Ruined Pages", "Buckets and Towels", "This Is Our Room", "Felix Breaks Down", "Rebuilt by Many Hands"]
+            },
+            {
+                season: "Season One", label: "Finale", title: "Still Valid",
+                summary: "The reflection space reopens for a community night where everyone shares one lesson from a dream that did not go as planned.",
+                visitor: "the community", wound: "the belief that failed dreams were wasted years", change: "Felix says what he has been learning all season: even what did not work still mattered",
+                prompt: "What failed dream still gave you something you can use?",
+                scenes: ["The Reopening", "No Perfect Speech", "Lessons from Broken Dreams", "The Woman Speaks", "Felix's Confession", "Still Valid"]
+            },
+            {
+                season: "Season Two", label: "Episode 1", title: "The Invitation",
+                summary: "A media company wants to partner with Felix, but they want the stories shaped for entertainment.",
+                visitor: "a media producer", wound: "visibility that asks for performance instead of truth", change: "Felix must decide what kind of attention the room can survive",
+                prompt: "Where are you tempted to make your truth more dramatic so people will notice?",
+                scenes: ["The Email", "The Producer Arrives", "Make It Bigger", "The Room Pushes Back", "A Private Offer", "Felix Does Not Answer Yet"]
+            },
+            {
+                season: "Season Two", label: "Episode 2", title: "The Cost of Becoming",
+                summary: "A close friend accuses Felix of using people's pain to build a platform.",
+                visitor: "an old friend", wound: "mistrust between purpose and ambition", change: "Felix has to examine the parts of him that still crave applause",
+                prompt: "What good thing in your life needs cleaner motives?",
+                scenes: ["The Accusation", "Old Friendship", "Receipts and Silence", "The Empty Room Afterward", "Felix Checks His Heart", "A Hard Apology"]
+            },
+            {
+                season: "Season Two", label: "Episode 3", title: "The Ones Who Left",
+                summary: "Felix reconnects with failed partners, old friends, and someone he disappointed during his ambitious years.",
+                visitor: "people from Felix's past", wound: "unfinished apologies and old damage", change: "he learns that growth includes repair, not only reinvention",
+                prompt: "Who deserves a softer, more honest version of your apology?",
+                scenes: ["The First Call", "A Former Partner", "The Friend Who Stopped Calling", "Someone He Disappointed", "No Defense", "Repair Begins Small"]
+            },
+            {
+                season: "Season Two", label: "Episode 4", title: "The Dream That Returned",
+                summary: "Felix revisits an old dream and begins writing a book from the stories and lessons of the room.",
+                visitor: "Felix's buried writer self", wound: "a dream postponed so long it feels embarrassing", change: "he lets an old dream return without demanding it prove itself first",
+                prompt: "What old dream keeps returning quietly?",
+                scenes: ["The Blank Document", "Stories on the Floor", "The First Page", "Fear of Sounding Small", "The Group Reads", "A Title Appears"]
+            },
+            {
+                season: "Season Two", label: "Episode 5", title: "The Breaking Point",
+                summary: "The movement grows too fast, and Felix burns out while helping others rest.",
+                visitor: "too many requests at once", wound: "service without boundaries", change: "Felix learns rest is not betrayal of purpose",
+                prompt: "Where are you helping others heal while refusing your own rest?",
+                scenes: ["Three Missed Calls", "Another Interview", "The Chair He Never Uses", "Body Says No", "Closed for One Day", "Rest as Obedience"]
+            },
+            {
+                season: "Season Two", label: "Episode 6", title: "Grace in Unexpected Places",
+                summary: "A former critic comes to the space after personal loss, and Felix must choose compassion over vindication.",
+                visitor: "a former critic", wound: "pride on both sides of misunderstanding", change: "Felix learns grace must stretch beyond people who were easy to love",
+                prompt: "Who would be hard for you to show compassion to if they came in hurting?",
+                scenes: ["The Critic at the Door", "Old Words Online", "Loss Changes His Voice", "Felix Wants to Win", "Grace Takes the Chair", "No Enemy Today"]
+            },
+            {
+                season: "Season Two", label: "Episode 7", title: "What We Leave Behind",
+                summary: "The group creates a digital archive of life stories from ordinary people in the community.",
+                visitor: "ordinary people with hidden histories", wound: "fear that simple lives will be forgotten", change: "the community becomes the hero of its own record",
+                prompt: "What part of your ordinary life deserves to be recorded with honor?",
+                scenes: ["The Archive Idea", "First Voice Note", "Photos in a Shoebox", "The Cleaner Returns", "Children Listen", "A Community Remembers"]
+            },
+            {
+                season: "Season Two", label: "Episode 8", title: "The Story Is Still Unfolding",
+                summary: "Felix is invited to speak on a large stage and chooses truth over a perfect success speech.",
+                visitor: "a large audience", wound: "pressure to turn healing into a polished success story", change: "Felix tells the truth in public and finds freedom in imperfection",
+                prompt: "What truth would you tell if you stopped trying to sound successful?",
+                scenes: ["Backstage", "The Prepared Speech", "A Face in the Crowd", "He Closes the Notes", "The Honest Talk", "Standing Ovation, Quiet Heart"]
+            },
+            {
+                season: "Season Two", label: "Series Finale", title: "My Dreams Are Valid",
+                summary: "Felix returns to the first room and sees stories, workshops, healing circles, and new beginnings.",
+                visitor: "a new person at the door", wound: "the fear that beginning again is too late", change: "Felix understands the dream was never only success; it was service",
+                prompt: "What would you like to begin with: a reflection, a writing prompt, or a conversation?",
+                scenes: ["The First Room Again", "Workshops and Circles", "The Book on the Table", "What Success Became", "A New Person Enters", "Begin Here"]
+            }
+        ];
+
+        const titleEl = document.getElementById("episodeTitle");
+        const metaEl = document.getElementById("episodeMeta");
+        const textEl = document.getElementById("episodeText");
+        const promptEl = document.getElementById("episodePrompt");
+        const noteEl = document.getElementById("dailyNote");
+        const shareStatus = document.getElementById("shareStatus");
+        const sceneVoiceStatus = document.getElementById("sceneVoiceStatus");
+        const episodeVoiceStatus = document.getElementById("episodeVoiceStatus");
+        const readerInput = document.getElementById("readerName");
+        const modeInput = document.getElementById("mode");
+        const previousButton = document.getElementById("previousEpisode");
+        const todayButton = document.getElementById("todayEpisode");
+        const seriesScenes = seriesEpisodes.flatMap((episode, episodeIndex) =>
+            episode.scenes.map((sceneTitle, sceneIndex) => ({
+                episode,
+                episodeIndex,
+                sceneTitle,
+                sceneIndex
+            }))
+        );
+        let offset = 0;
+        let currentShare = null;
+        let currentVoiceTarget = null;
+
+        function cleanName(value) {
+            return value.trim().replace(/[<>]/g, "") || "Felix";
+        }
+
+        function dayNumber(date) {
+            const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            return Math.max(0, Math.floor((today - startDate) / 86400000));
+        }
+
+        function modeLine(mode, name) {
+            if (mode === "tense") return "The room feels quiet, but not safe. " + name + " can tell this conversation will change what happens next.";
+            if (mode === "spiritual") return name + " lets the silence breathe before anyone tries to turn pain into an answer.";
+            return name + " does not rush to fix anyone. He helps the truth come out one sentence at a time.";
+        }
+
+        function sceneParagraphs(scene, day, name, mode) {
+            const episode = scene.episode;
+            const sceneNumber = scene.sceneIndex + 1;
+            const openings = [
+                "The room is quiet, but not empty. Felix can feel someone holding back tears before they say a word.",
+                "Felix has learned not to speak first. He waits, and the silence gives " + episode.visitor + " room to breathe.",
+                "The chairs are in a circle again. This time, the problem is " + episode.wound + ".",
+                "Felix notices the small thing first: the hand on the bag, the eyes on the floor, the way hope tries not to look foolish.",
+                "The room hears the truth plainly. No performance. No big speech. Just " + episode.wound + ".",
+                "Near the end of the episode, the scene turns on one honest choice."
+            ];
+            const turns = [
+                episode.summary,
+                "Felix gives the person a simple task. Not a cure. Not advice. Just one honest action they can take before fear talks them out of it.",
+                modeLine(mode, name),
+                "The person resists at first. Then one sentence lands in the room, and everyone knows the story has moved.",
+                "By the end of this scene, the change is small but real: " + episode.change + ".",
+                "The scene closes with a question nobody can answer quickly."
+            ];
+            return [
+                openings[scene.sceneIndex],
+                turns[scene.sceneIndex],
+                "Felix writes one line on the board: \"" + episode.prompt + "\"",
+                sceneNumber < 6
+                    ? "The page stops there. Tomorrow continues the same episode with Scene " + (sceneNumber + 1) + "."
+                    : "This episode closes here. Tomorrow begins the next episode in the series."
+            ];
+        }
+
+        function shareUrl() {
+            return "https://stories.felixplatforms.com/#today";
+        }
+
+        function shareExcerpt(platform, details) {
+            const title = details.title;
+            const prompt = details.prompt;
+            const url = details.url;
+            const options = {
+                facebook: title + "\n\nA quiet reflective drama about broken dreams, healing, and beginning again.\n\n" + url,
+                x: title + "\n\nA daily scene from My Dreams Are Valid: broken dreams, honest rooms, and the courage to begin again.\n\n" + url,
+                substack: title + "\n\nToday’s reflection from My Dreams Are Valid:\n\n" + prompt + "\n\n" + url,
+                linkedin: title + "\n\nA reflective drama scene about resilience, purpose, and rebuilding after loss. Today’s prompt: " + prompt + "\n\n" + url,
+                bluesky: title + "\n\nToday’s scene asks: " + prompt + "\n\n" + url
+            };
+            return options[platform] || title + "\n\n" + url;
+        }
+
+        async function copyShareText(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                shareStatus.textContent = "Excerpt copied. Paste it into the post box if it does not appear automatically.";
+            } catch (error) {
+                shareStatus.textContent = "Share opened. If text is missing, copy it from today’s scene.";
+            }
+        }
+
+        function openPlatformShare(platform) {
+            if (!currentShare) return;
+            const text = shareExcerpt(platform, currentShare);
+            const encodedText = encodeURIComponent(text);
+            const encodedUrl = encodeURIComponent(currentShare.url);
+            const encodedTitle = encodeURIComponent(currentShare.title);
+            const urls = {
+                facebook: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
+                x: "https://twitter.com/intent/tweet?text=" + encodedText,
+                substack: "https://substack.com/home?utm_source=share",
+                linkedin: "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl,
+                bluesky: "https://bsky.app/intent/compose?text=" + encodedText
+            };
+            copyShareText(text);
+            window.open(urls[platform] || currentShare.url, "_blank", "noopener,noreferrer");
+        }
+
+        function setVoiceStatus(target, message) {
+            const status = target === "episode" ? episodeVoiceStatus : sceneVoiceStatus;
+            status.textContent = message;
+        }
+
+        function readTextFor(target) {
+            if (target === "episode") {
+                const episode = document.querySelector("#episode-one");
+                return Array.from(episode.querySelectorAll("h3, p, .quote"))
+                    .map((node) => node.textContent.trim())
+                    .filter(Boolean)
+                    .join(". ");
+            }
+
+            return [
+                titleEl.textContent,
+                ...Array.from(textEl.querySelectorAll("p")).map((node) => node.textContent.trim()),
+                promptEl.textContent
+            ].filter(Boolean).join(". ");
+        }
+
+        function stopVoice(clearStatus = true) {
+            if ("speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+            }
+            if (clearStatus) {
+                sceneVoiceStatus.textContent = "";
+                episodeVoiceStatus.textContent = "";
+            }
+            currentVoiceTarget = null;
+        }
+
+        function playVoice(target) {
+            if (!("speechSynthesis" in window)) {
+                setVoiceStatus(target, "Voice reading is not supported in this browser.");
+                return;
+            }
+
+            if (window.speechSynthesis.paused && currentVoiceTarget === target) {
+                window.speechSynthesis.resume();
+                setVoiceStatus(target, "Reading...");
+                return;
+            }
+
+            stopVoice(false);
+            const text = readTextFor(target);
+            if (!text) return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.92;
+            utterance.pitch = 1;
+            currentVoiceTarget = target;
+            utterance.onstart = () => setVoiceStatus(target, "Reading...");
+            utterance.onend = () => {
+                setVoiceStatus(target, "Finished.");
+                currentVoiceTarget = null;
+            };
+            utterance.onerror = () => {
+                setVoiceStatus(target, "Voice reading stopped.");
+                currentVoiceTarget = null;
+            };
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function pauseVoice(target) {
+            if (!("speechSynthesis" in window)) return;
+            if (currentVoiceTarget === target && window.speechSynthesis.speaking) {
+                window.speechSynthesis.pause();
+                setVoiceStatus(target, "Paused.");
+            }
+        }
+
+        function handleVoice(target, action) {
+            if (action === "play") playVoice(target);
+            if (action === "pause") pauseVoice(target);
+            if (action === "stop") {
+                stopVoice(false);
+                setVoiceStatus(target, "Stopped.");
+            }
+        }
+
+        function renderDaily() {
+            const saved = JSON.parse(localStorage.getItem("dreamsReader") || "{}");
+            if (saved.name && document.activeElement !== readerInput) readerInput.value = saved.name;
+            if (saved.mode && document.activeElement !== modeInput) modeInput.value = saved.mode;
+
+            const name = cleanName(readerInput.value);
+            const mode = modeInput.value || "plain";
+            const today = new Date();
+            const day = dayNumber(today) + offset;
+            const scene = seriesScenes[day % seriesScenes.length];
+            const cycle = Math.floor(day / seriesScenes.length) + 1;
+            const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+            const episode = scene.episode;
+            const sceneNumber = scene.sceneIndex + 1;
+
+            titleEl.textContent = episode.label + ": " + episode.title + " | Scene " + sceneNumber + ": " + scene.sceneTitle;
+            metaEl.textContent = episode.season + " | Episode " + (scene.episodeIndex + 1) + " of " + seriesEpisodes.length + " | Scene " + sceneNumber + " of 6 | Day " + (day + 1) + " of " + seriesScenes.length + (cycle > 1 ? " | Cycle " + cycle : "") + " | " + today.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+            textEl.innerHTML = sceneParagraphs(scene, day, name, mode).map((line) => "<p>" + line + "</p>").join("");
+            promptEl.textContent = "Reflection prompt: " + episode.prompt;
+            if (currentVoiceTarget === "scene") {
+                stopVoice(false);
+                setVoiceStatus("scene", "Scene changed. Press Read Scene to start again.");
+            }
+            currentShare = {
+                title: titleEl.textContent,
+                prompt: episode.prompt,
+                url: shareUrl()
+            };
+            shareStatus.textContent = "";
+            previousButton.disabled = offset === 0;
+            todayButton.disabled = offset === 0;
+            noteEl.textContent = offset
+                ? "Preview mode: you are " + offset + " scene" + (offset === 1 ? "" : "s") + " ahead. Click Back to Today to return to today's real scene."
+                : "The next scene opens automatically on " + tomorrow.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) + ".";
+        }
+
+        document.getElementById("saveReader").addEventListener("click", () => {
+            localStorage.setItem("dreamsReader", JSON.stringify({
+                name: cleanName(readerInput.value),
+                mode: modeInput.value
+            }));
+            offset = 0;
+            renderDaily();
+        });
+
+        document.getElementById("nextEpisode").addEventListener("click", () => {
+            offset += 1;
+            renderDaily();
+        });
+
+        previousButton.addEventListener("click", () => {
+            offset = Math.max(0, offset - 1);
+            renderDaily();
+        });
+
+        todayButton.addEventListener("click", () => {
+            offset = 0;
+            renderDaily();
+        });
+
+        document.getElementById("deviceShare").addEventListener("click", async () => {
+            if (!currentShare) return;
+            const text = shareExcerpt("substack", currentShare);
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: currentShare.title,
+                        text,
+                        url: currentShare.url
+                    });
+                    shareStatus.textContent = "Shared.";
+                } catch (error) {
+                    shareStatus.textContent = "Share cancelled.";
+                }
+            } else {
+                await copyShareText(text);
+            }
+        });
+
+        document.querySelectorAll("[data-share-platform]").forEach((button) => {
+            button.addEventListener("click", () => openPlatformShare(button.dataset.sharePlatform));
+        });
+
+        document.querySelectorAll("[data-read-target] [data-voice-action]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const wrapper = button.closest("[data-read-target]");
+                handleVoice(wrapper.dataset.readTarget, button.dataset.voiceAction);
+            });
+        });
+
+        window.addEventListener("beforeunload", () => stopVoice(false));
+
+        [readerInput, modeInput].forEach((control) => control.addEventListener("input", renderDaily));
+
+        renderDaily();
+    </script>
 </body>
+
 </html>
